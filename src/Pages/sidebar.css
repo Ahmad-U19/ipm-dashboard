@@ -1,0 +1,58 @@
+.sidebar {
+  width: 240px;
+  height: 100vh;
+  background: #2cab4f;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  position: fixed;
+  left: 0;
+  top: 0;
+}
+
+.logo {
+  margin-bottom: 30px;
+}
+
+.sidebar nav a,
+.sidebar-footer a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  padding: 10px 0;
+  opacity: 0.9;
+}
+
+.sidebar nav a.active {
+  font-weight: bold;
+  background: rgba(255, 255, 255, 0.15);
+  padding-left: 10px;
+  border-radius: 4px;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: white;
+  text-decoration: none;
+  padding: 10px 0;
+}
+
+.nav-item.active {
+  font-weight: bold;
+  background: rgba(255, 255, 255, 0.15);
+  padding-left: 10px;
+  border-radius: 4px;
+}
+
+.nav-icon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
