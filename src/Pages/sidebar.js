@@ -1,10 +1,10 @@
 import { NavLink } from "react-router-dom";
 import "./sidebar.css";
-import img from '../Data/bag-removebg-preview.png'
+import ImgNww from "../Data/bag-removebg-preview.png"
 export default function Sidebar() {
   return (
     <aside className="sidebar">
-      <img src={img} alt="Logo" />
+      <img src={ImgNww} alt="Logo" />
 
       <nav>
         <NavLink to="/dashboard">Greenhouses</NavLink>

@@ -1,0 +1,128 @@
+/* ===== General Reset ===== */
+* {
+  box-sizing: border-box;
+}
+
+.support {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
+}
+
+.support img {
+  width: 60px;
+  height: auto;
+}
+
+.support h1 {
+  color: #0a5e22;
+  font-size: 36px;
+  margin: 0;
+}
+
+/* ===== Help Section ===== */
+.help {
+  margin: 30px 20px;
+}
+
+.heading {
+  font-size: 52px;
+  font-weight: 600;
+  color: #0da839;
+  margin-bottom: 10px;
+}
+
+.team {
+  font-size: 20px;
+  color: rgb(69, 73, 69);
+  max-width: 800px;
+}
+
+/* ===== Contact Section ===== */
+.contact {
+  margin: 40px 20px;
+}
+
+.contactUS {
+  margin-top: 30px;
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.sect {
+  background: #f4f8f5;
+  padding: 20px 25px;
+  border-radius: 8px;
+  min-width: 250px;
+}
+
+.sect p {
+  font-size: 22px;
+  color: rgb(11, 46, 22);
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.sect a {
+  display: inline-block;
+  font-size: 18px;
+  color: #0a5e22;
+  text-decoration: none;
+  margin-top: 5px;
+  transition: color 0.3s ease;
+}
+
+.sect a:hover {
+  color: #0da839;
+  text-decoration: underline;
+}
+
+/* ===== Mobile Responsive ===== */
+@media (max-width: 768px) {
+  .support {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .support h1 {
+    font-size: 32px;
+  }
+
+  .heading {
+    font-size: 38px;
+  }
+
+  .team {
+    font-size: 18px;
+  }
+
+  .contactUS {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .sect {
+    width: 100%;
+  }
+}
+
+/* ===== Small Mobile ===== */
+@media (max-width: 480px) {
+  .heading {
+    font-size: 30px;
+  }
+
+  .team {
+    font-size: 16px;
+  }
+
+  .sect p {
+    font-size: 20px;
+  }
+
+  .sect a {
+    font-size: 16px;
+  }
+}

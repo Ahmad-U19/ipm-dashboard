@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./login.css";
 import img from "../Data/bag-removebg-preview.png";
+import img2 from "../Data/IPM_login_background.7db876e5.svg"
 
 export default function Login() {
   const navigate = useNavigate();
@@ -53,7 +54,9 @@ export default function Login() {
 
   return (
     <div className="login-page">
-      <div className="green-bg"></div>
+      <div className="green-bg">
+        <img src={img2} alt="non-ipm"/>
+      </div>
 
       <div className="login-box">
         <div className="img-class">
