@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 
 function Dashboard() {
   useEffect(() => {
-    document.title = "Dashboard | IPM Scoutek";
+    document.title = "Greenhouses | IPM Scoutek";
   }, []);
 
   return (
