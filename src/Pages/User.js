@@ -12,6 +12,10 @@ export default function User() {
         <img className="heading-icon" src={userIMG} alt="User" />
         <h4>Users</h4>
       </div>
+      <br /><br />
+      <div className="users">
+        <h2>This feature is coming soon...</h2>
+      </div>
     </div>
   );
 }

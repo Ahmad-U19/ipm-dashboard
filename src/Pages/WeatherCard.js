@@ -5,7 +5,7 @@ export default function WeatherCard() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const API_KEY = "9def2c789b0c1372dfc03aa46aad69c1";
+    const API_KEY = process.env.REACT_APP_OPENWEATHER_API_KEY;
     const DEFAULT_CITY = "Ontario";
 
     // 🚨 Spelling Fix Map
@@ -45,22 +45,32 @@ export default function WeatherCard() {
     useEffect(() => {
         const getWeather = async (lat, lon) => {
             try {
-                // 1️⃣ Use reverse geo for display name
                 const geoUrl = `https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=1&appid=${API_KEY}`;
                 const geoRes = await fetch(geoUrl);
                 const geoData = await geoRes.json();
-                const realCity = geoData[0]?.name || DEFAULT_CITY;
 
-                // 2️⃣ Fetch weather by COORDINATES (more reliable)
+                let rawName = geoData[0]?.name || DEFAULT_CITY;
+                const state = geoData[0]?.state || "";
+
+                const BAD_KEYWORDS = ["Town", "Cantt", "Cantonment", "Tehsil", "City", "District"];
+                BAD_KEYWORDS.forEach(k => {
+                    if (rawName.includes(k)) rawName = rawName.replace(k, "").trim();
+                });
+
+                if (rawName.length < 3 || BAD_KEYWORDS.some(k => rawName.includes(k))) {
+                    rawName = state || DEFAULT_CITY;
+                }
+
+                const finalCityName = formatCity(rawName);
+
                 const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`;
                 const weatherRes = await fetch(weatherUrl);
                 const weatherData = await weatherRes.json();
 
-                if (!weatherData || !weatherData.main) {
+                if (!weatherData.main) {
                     setError("Weather data not available");
                 } else {
-                    // store both city+data
-                    weatherData.name = realCity;
+                    weatherData.name = finalCityName;
                     setWeather(weatherData);
                 }
             } catch {
@@ -72,13 +82,16 @@ export default function WeatherCard() {
 
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
-                (pos) => getWeather(pos.coords.latitude, pos.coords.longitude),
+                pos => getWeather(pos.coords.latitude, pos.coords.longitude),
                 () => fetchWeatherByCity(DEFAULT_CITY)
             );
         } else {
             fetchWeatherByCity(DEFAULT_CITY);
         }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+ 
 
 
     if (loading) return <p>Loading weather...</p>;
