@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "../DataBase/supabaseClient"; // ⬅️ important!
 import "./login.css";
 import img from "../Data/bag-removebg-preview.png";
-import img2 from "../Data/IPM_login_background.7db876e5.svg"
+import img2 from "../Data/IPM_login_background.7db876e5.svg";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -29,33 +30,38 @@ export default function Login() {
     },
   };
 
-  const users = [
-    { email: "test@test.com", password: "123456" },
-    { email: "admin@ipm.com", password: "admin123" },
-  ];
-
   const t = texts[lang];
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const match = users.find(
-      (u) => u.email === email && u.password === password
-    );
+    // 🔥 Authenticate with Supabase
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
-    if (!match) {
-      setError(t.invalid);
+    if (error) {
+      setError(t.invalid); // show translated error
       return;
     }
 
     setError("");
-    navigate("/dashboard");
+
+    // OPTIONAL: fetch profile data here if needed
+    // const { data: profile } = await supabase
+    //   .from("profiles")
+    //   .select("*")
+    //   .eq("user_id", data.user.id)
+    //   .single();
+
+    navigate("/dashboard"); // redirect after login
   };
 
   return (
     <div className="login-page">
       <div className="green-bg">
-        <img src={img2} alt="non-ipm"/>
+        <img src={img2} alt="non-ipm" />
       </div>
 
       <div className="login-box">
@@ -69,6 +75,7 @@ export default function Login() {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
 
           <label>{t.password}</label>
@@ -76,6 +83,7 @@ export default function Login() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
 
           {error && <p className="error">{error}</p>}
@@ -86,7 +94,7 @@ export default function Login() {
         <p className="forgot">{t.forgot}</p>
 
         <div className="language">
-            <label >Language: </label>
+          <label>Language: </label>
           <select value={lang} onChange={(e) => setLang(e.target.value)}>
             <option value="en">English</option>
             <option value="es">Español</option>
