@@ -26,3 +26,5 @@ yarn-error.log*
 .key.env
 src/key.env
 *.env
+# Exception: .env.example should be committed as a template
+!.env.example

@@ -1,3 +1,66 @@
+# IPM Scoutek Dashboard
+
+This project is the IPM Scoutek Dashboard application built with React.
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (v14 or higher)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd ipm-dashboard
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Set up environment variables:
+```bash
+# Copy the example environment file
+cp .env.example .env.local
+
+# Edit .env.local and add your actual API keys
+# DO NOT commit .env.local to version control
+```
+
+4. Start the development server:
+```bash
+npm start
+```
+
+The app will open at [http://localhost:3000](http://localhost:3000)
+
+### Environment Variables
+
+The application requires the following environment variables:
+
+- `REACT_APP_OPENWEATHER_API_KEY` - Your OpenWeatherMap API key for weather functionality
+
+**Important:** 
+- Never commit `.env.local` or any `.env` files containing actual API keys to version control
+- The `.env.example` file is a template showing what variables are needed
+- Create your own `.env.local` file with your actual API keys
+- The `.env.local` file is already in `.gitignore` and will not be pushed to GitHub
+
+### Getting API Keys
+
+**OpenWeatherMap API Key:**
+1. Visit [https://home.openweathermap.org/users/sign_up](https://home.openweathermap.org/users/sign_up)
+2. Sign up for a free account
+3. Go to [API Keys](https://home.openweathermap.org/api_keys)
+4. Copy your API key
+5. Add it to your `.env.local` file as `REACT_APP_OPENWEATHER_API_KEY=your_key_here`
+
+---
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

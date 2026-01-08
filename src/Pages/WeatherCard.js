@@ -29,13 +29,36 @@ export default function WeatherCard() {
     // 🌍 Fetch weather by city
     const fetchWeatherByCity = async (city) => {
         try {
+            if (!API_KEY) {
+                setError("API key not configured. Please set REACT_APP_OPENWEATHER_API_KEY in your .env file.");
+                setLoading(false);
+                return;
+            }
+
             const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${API_KEY}`;
             const res = await fetch(url);
+            
+            if (!res.ok) {
+                const errorData = await res.json().catch(() => ({}));
+                if (res.status === 401) {
+                    setError("Invalid API key. Please check your OpenWeather API key.");
+                } else if (res.status === 404) {
+                    setError(`City "${city}" not found.`);
+                } else {
+                    setError(`Failed to fetch weather: ${errorData.message || res.statusText}`);
+                }
+                setLoading(false);
+                return;
+            }
+
             const data = await res.json();
-            if (data?.main && data?.weather) setWeather(data);
-            else setError("Weather data not available");
-        } catch {
-            setError("Failed to fetch weather");
+            if (data?.main && data?.weather) {
+                setWeather(data);
+            } else {
+                setError("Weather data not available");
+            }
+        } catch (err) {
+            setError(`Failed to fetch weather: ${err.message || "Network error"}`);
         } finally {
             setLoading(false);
         }
@@ -43,11 +66,26 @@ export default function WeatherCard() {
 
     // 📍 Auto detect location + correct city name
     useEffect(() => {
+        if (!API_KEY) {
+            setError("API key not configured. Please set REACT_APP_OPENWEATHER_API_KEY in your .env file.");
+            setLoading(false);
+            return;
+        }
+
         const getWeather = async (lat, lon) => {
             try {
                 const geoUrl = `https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=1&appid=${API_KEY}`;
                 const geoRes = await fetch(geoUrl);
+                
+                if (!geoRes.ok) {
+                    throw new Error("Failed to get location");
+                }
+
                 const geoData = await geoRes.json();
+
+                if (!geoData || !geoData[0]) {
+                    throw new Error("Location data not available");
+                }
 
                 let rawName = geoData[0]?.name || DEFAULT_CITY;
                 const state = geoData[0]?.state || "";
@@ -65,6 +103,11 @@ export default function WeatherCard() {
 
                 const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`;
                 const weatherRes = await fetch(weatherUrl);
+                
+                if (!weatherRes.ok) {
+                    throw new Error("Failed to get weather data");
+                }
+
                 const weatherData = await weatherRes.json();
 
                 if (!weatherData.main) {
@@ -73,7 +116,8 @@ export default function WeatherCard() {
                     weatherData.name = finalCityName;
                     setWeather(weatherData);
                 }
-            } catch {
+            } catch (err) {
+                console.error("Error fetching weather by location:", err);
                 fetchWeatherByCity(DEFAULT_CITY);
             } finally {
                 setLoading(false);
@@ -95,7 +139,8 @@ export default function WeatherCard() {
 
 
     if (loading) return <p>Loading weather...</p>;
-    if (error) return <p>{error}</p>;
+    if (error) return <p style={{ color: "red", padding: "10px" }}>{error}</p>;
+    if (!weather) return <p>No weather data available</p>;
 
     const cityName = formatCity(weather.name);
 

@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import "./sidebar.css";
 import ImgNww from "../Data/bag-removebg-preview.png"
 import greenhousePIC from "../Data/greenhouse.png"
@@ -11,12 +11,15 @@ import setting from "../Data/settings.png"
 import logout from "../Data/turn-off.png"
 
 export default function Sidebar() {
+  const location = useLocation();
+  const isLibrariesActive = location.pathname.startsWith('/libraries');
+
   return (
     <aside className="sidebar">
       <img src={ImgNww} alt="Logo" />
 
       <nav>
-        <NavLink to="/dashboard" className="nav-item">
+        <NavLink to="/greenhouses" className="nav-item">
           <img className="img-nav" src={greenhousePIC} alt="" />
           Greenhouses
         </NavLink>
@@ -36,7 +39,10 @@ export default function Sidebar() {
           Users
         </NavLink>
 
-        <NavLink to="/libraries" className="nav-item">
+        <NavLink 
+          to="/libraries/plants" 
+          className={`nav-item ${isLibrariesActive ? 'active' : ''}`}
+        >
           <img className="img-nav" src={librarypic} alt="" />
           Libraries
         </NavLink>
