@@ -148,7 +148,7 @@ const SAMPLE_PLANTS = [
 
 export default function PlantLibrary() {
   const [plants, setPlants] = useState(SAMPLE_PLANTS);
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
   const [search, setSearch] = useState("");
   const [activeTab, setActiveTab] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
@@ -517,4 +517,3 @@ export default function PlantLibrary() {
     </div>
   );
 }
-

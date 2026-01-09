@@ -36,7 +36,7 @@ export default function Login() {
     e.preventDefault();
 
     // 🔥 Authenticate with Supabase
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });

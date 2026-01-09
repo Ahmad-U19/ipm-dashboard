@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Routes, Route, NavLink, Outlet, useNavigate } from "react-router-dom";
+import { Routes, Route, NavLink, useNavigate } from "react-router-dom";
 import PlantLibrary from "./PlantLibrary";
 import "./libraries.css";
 
@@ -8,7 +8,7 @@ export default function Libraries() {
 
   useEffect(() => {
     // Redirect to plants page if on base /libraries route
-    if (window.location.pathname === "/libraries") {
+    if (window.location.pathname === "/libraries" || window.location.pathname === "/libraries/") {
       navigate("/libraries/plants", { replace: true });
     }
   }, [navigate]);
@@ -90,4 +90,3 @@ export default function Libraries() {
     </div>
   );
 }
-

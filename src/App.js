@@ -6,6 +6,7 @@ import Support223 from "./Pages/Support.js";
 import Assignment from "./Pages/Assignment.js";
 import User from "./Pages/User.js";
 import Libraries from "./Pages/Libraries.js";
+import Reports from "./Pages/Reports.js";
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
           <Route element={<DashboardLayout />}>
           <Route path="/dashboard" element={<Greenhouse />} />
           <Route path="/greenhouses" element={<Greenhouse />} />
+          <Route path="/reports/*" element={<Reports />} />
           <Route path="/support" element={<Support223 />} />
           <Route path="/user" element={<User />} />
           <Route path="/assignments" element={<Assignment />} />

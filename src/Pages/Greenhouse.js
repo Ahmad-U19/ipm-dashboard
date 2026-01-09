@@ -39,11 +39,11 @@ const SAMPLE_GREENHOUSES = [
 ];
 
 export default function Greenhouse() {
-  const [greenhouses, setGreenhouses] = useState(SAMPLE_GREENHOUSES);
+  const [greenhouses] = useState(SAMPLE_GREENHOUSES);
   const [activeTab, setActiveTab] = useState("active");
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState("date-newest");
-  const [currentWeek, setCurrentWeek] = useState(32);
+  const [currentWeek] = useState(32);
 
   useEffect(() => {
     document.title = "Greenhouses | IPM Scoutek";
@@ -207,4 +207,3 @@ export default function Greenhouse() {
     </div>
   );
 }
-

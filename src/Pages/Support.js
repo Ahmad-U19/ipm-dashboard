@@ -1,5 +1,4 @@
-import React from "react";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import "./Support.css"
 import supportIMG from "../Data/support-64.png"
 

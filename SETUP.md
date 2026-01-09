@@ -51,3 +51,4 @@ The `.gitignore` file is already configured to prevent committing environment fi
 - Each platform has its own way to set environment variables
 - Check your hosting platform's documentation for setting environment variables
 
+
