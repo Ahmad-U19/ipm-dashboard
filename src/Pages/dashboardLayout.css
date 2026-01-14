@@ -1,5 +1,40 @@
 .dashboard-layout {
   display: flex;
+  flex-direction: column;
+  /* Mobile first stack, but desktop overrides */
+}
+
+/* Mobile Header */
+.mobile-header {
+  display: none;
+  align-items: center;
+  gap: 12px;
+  background: #2bc255;
+  /* Match sidebar color */
+  padding: 10px 16px;
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 1001;
+  /* Above sidebar overlay */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.mobile-toggle-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-logo-text {
+  font-size: 18px;
+  font-weight: 600;
 }
 
 .dashboard-content {
@@ -8,4 +43,53 @@
   width: calc(100% - 240px);
   min-height: 100vh;
   background: #f4f4f4;
+  transition: margin-left 0.3s ease, width 0.3s ease;
+}
+
+/* Sidebar Overlay */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  backdrop-filter: blur(2px);
+  animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* Responsive adjustments */
+@media (min-width: 1025px) {
+  .dashboard-layout {
+    flex-direction: row;
+  }
+}
+
+@media (max-width: 1024px) {
+  .dashboard-layout {
+    display: block;
+    /* Remove flex to allow stacking if needed, or keep block */
+  }
+
+  .mobile-header {
+    display: flex;
+  }
+
+  .dashboard-content {
+    margin-left: 0;
+    width: 100%;
+    padding: 16px;
+    padding-top: 20px;
+  }
 }

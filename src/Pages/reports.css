@@ -72,3 +72,47 @@
   font-size: 18px;
 }
 
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .reports-container {
+    flex-direction: column;
+  }
+
+  .reports-sidebar {
+    width: 100%;
+    height: auto;
+    max-height: none;
+    border-right: none;
+    border-bottom: 1px solid #e5e7eb;
+    position: static;
+    padding: 10px 0;
+  }
+
+  .reports-nav {
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 0 10px;
+    gap: 10px;
+  }
+
+  .report-nav-item {
+    white-space: nowrap;
+    padding: 8px 12px;
+  }
+
+  .report-nav-item.active::before {
+    left: 50%;
+    top: auto;
+    bottom: -2px;
+    /* Active indicator at bottom for horizontal */
+    width: 60%;
+    height: 3px;
+    transform: translateX(-50%);
+    border-radius: 2px 2px 0 0;
+  }
+
+  .reports-content {
+    padding: 10px;
+  }
+}

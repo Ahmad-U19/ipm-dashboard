@@ -180,3 +180,59 @@
   color: #b91c1c;
   font-weight: 600;
 }
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .user-page {
+    padding: 10px;
+  }
+
+  .heading {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .heading-left {
+    width: 100%;
+  }
+
+  .primary-circle-btn {
+    margin-left: auto;
+    /* Push to right */
+  }
+
+  .card-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .tabs {
+    width: 100%;
+    overflow-x: auto;
+    /* Allow scrolling tabs if too many */
+    padding-bottom: 4px;
+  }
+
+  .tab {
+    flex-shrink: 0;
+  }
+
+  .actions {
+    margin-left: 0;
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-input {
+    width: 100%;
+  }
+
+  .table-footer {
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+  }
+}

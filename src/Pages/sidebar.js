@@ -11,7 +11,7 @@ import librarypic from "../Data/book.png"
 import setting from "../Data/settings.png"
 import logout from "../Data/turn-off.png"
 
-export default function Sidebar() {
+export default function Sidebar({ isMobileOpen, onClose }) {
   const location = useLocation();
   const isLibrariesActive = location.pathname.startsWith('/libraries');
   const isReportsActive = location.pathname.startsWith('/reports');
@@ -21,12 +21,23 @@ export default function Sidebar() {
     setIsReportsExpanded(isReportsActive);
   }, [isReportsActive]);
 
+  // Close sidebar on route change (mobile)
+  useEffect(() => {
+    if (onClose) onClose();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname]);
+
   const toggleReports = () => {
     setIsReportsExpanded(!isReportsExpanded);
   };
 
   return (
-    <aside className="sidebar">
+    <aside className={`sidebar ${isMobileOpen ? 'mobile-open' : ''}`}>
+      {/* Mobile Close Button */}
+      <button className="mobile-close-btn" onClick={onClose}>
+        ×
+      </button>
+
       <img src={ImgNww} alt="Logo" />
 
       <nav>
@@ -36,7 +47,7 @@ export default function Sidebar() {
         </NavLink>
 
         <div className="nav-item-with-dropdown">
-          <div 
+          <div
             className={`nav-item ${isReportsActive ? 'active' : ''}`}
             onClick={toggleReports}
             style={{ cursor: 'pointer' }}
@@ -85,14 +96,14 @@ export default function Sidebar() {
           Users
         </NavLink>
 
-        <NavLink 
-          to="/libraries/plants" 
+        <NavLink
+          to="/libraries/plants"
           className={`nav-item ${isLibrariesActive ? 'active' : ''}`}
         >
           <img className="img-nav" src={librarypic} alt="" />
           Libraries
         </NavLink>
-        
+
         <NavLink to="/support" className="nav-item">
           <img className="img-nav" src={imgSupport} alt="" />
           Support

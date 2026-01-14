@@ -39,14 +39,49 @@ const SAMPLE_GREENHOUSES = [
 ];
 
 export default function Greenhouse() {
-  const [greenhouses] = useState(SAMPLE_GREENHOUSES);
+  const [greenhouses, setGreenhouses] = useState(SAMPLE_GREENHOUSES);
   const [activeTab, setActiveTab] = useState("active");
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState("date-newest");
-  const [currentWeek] = useState(32);
+  // Helper to get ISO week number
+  const getCurrentWeek = () => {
+    const date = new Date();
+    date.setHours(0, 0, 0, 0);
+    // Thursday in current week decides the year.
+    date.setDate(date.getDate() + 3 - ((date.getDay() + 6) % 7));
+    // January 4 is always in week 1.
+    const week1 = new Date(date.getFullYear(), 0, 4);
+    // Adjust to Thursday in week 1 and count number of weeks from date to week1.
+    return (
+      1 +
+      Math.round(
+        ((date.getTime() - week1.getTime()) / 86400000 -
+          3 +
+          ((week1.getDay() + 6) % 7)) /
+        7
+      )
+    );
+  };
+
+  const [currentWeek] = useState(getCurrentWeek());
+
+  // Modal State
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [newGreenhouseData, setNewGreenhouseData] = useState({
+    name: "",
+    address: "",
+  });
+
+  // Menu State
+  const [activeMenuId, setActiveMenuId] = useState(null);
 
   useEffect(() => {
     document.title = "Greenhouses | IPM Scoutek";
+
+    // Close menu when clicking outside
+    const handleClickOutside = () => setActiveMenuId(null);
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
   // Filter greenhouses based on tab and search
@@ -73,7 +108,7 @@ export default function Greenhouse() {
     const sorted = [...filtered].sort((a, b) => {
       switch (sortBy) {
         case "date-newest":
-          return b.id - a.id; // Assuming higher ID = newer
+          return b.id - a.id;
         case "date-oldest":
           return a.id - b.id;
         case "name-asc":
@@ -93,15 +128,55 @@ export default function Greenhouse() {
     (gh) => gh.status === "archived"
   ).length;
 
+  // Handlers
   const handleOpenAddModal = () => {
-    // TODO: Implement add greenhouse modal
-    console.log("Add greenhouse clicked");
+    setNewGreenhouseData({ name: "", address: "" });
+    setIsAddModalOpen(true);
+  };
+
+  const handleCloseAddModal = () => {
+    setIsAddModalOpen(false);
+  };
+
+  const handleAddGreenhouse = () => {
+    if (!newGreenhouseData.name || !newGreenhouseData.address) return;
+
+    const newGreenhouse = {
+      id: Date.now(), // Simple unique ID
+      name: newGreenhouseData.name,
+      address: newGreenhouseData.address,
+      lastWeekScouted: 0,
+      observations: 0,
+      status: "active",
+    };
+
+    setGreenhouses([newGreenhouse, ...greenhouses]);
+    handleCloseAddModal();
   };
 
   const handleMenuClick = (e, greenhouseId) => {
     e.stopPropagation();
-    // TODO: Implement context menu
-    console.log("Menu clicked for greenhouse:", greenhouseId);
+    setActiveMenuId(activeMenuId === greenhouseId ? null : greenhouseId);
+  };
+
+  const handleArchiveGreenhouse = (id) => {
+    setGreenhouses(
+      greenhouses.map((gh) =>
+        gh.id === id ? { ...gh, status: "archived" } : gh
+      )
+    );
+  };
+
+  const handleUnarchiveGreenhouse = (id) => {
+    setGreenhouses(
+      greenhouses.map((gh) =>
+        gh.id === id ? { ...gh, status: "active" } : gh
+      )
+    );
+  };
+
+  const handleDeleteGreenhouse = (id) => {
+    setGreenhouses(greenhouses.filter((gh) => gh.id !== id));
   };
 
   return (
@@ -179,13 +254,43 @@ export default function Greenhouse() {
         ) : (
           filteredGreenhouses.map((greenhouse) => (
             <div key={greenhouse.id} className="greenhouse-card">
-              <button
-                className="card-menu-btn"
-                onClick={(e) => handleMenuClick(e, greenhouse.id)}
-                aria-label="Menu"
-              >
-                ⋮
-              </button>
+              <div className="menu-container">
+                <button
+                  className="card-menu-btn"
+                  onClick={(e) => handleMenuClick(e, greenhouse.id)}
+                  aria-label="Menu"
+                >
+                  ⋮
+                </button>
+                {activeMenuId === greenhouse.id && (
+                  <div className="dropdown-menu">
+                    {greenhouse.status === "active" ? (
+                      <button
+                        className="dropdown-item"
+                        onClick={() => handleArchiveGreenhouse(greenhouse.id)}
+                      >
+                        Archive
+                      </button>
+                    ) : (
+                      <>
+                        <button
+                          className="dropdown-item"
+                          onClick={() => handleUnarchiveGreenhouse(greenhouse.id)}
+                        >
+                          Unarchive
+                        </button>
+                        <button
+                          className="dropdown-item delete"
+                          onClick={() => handleDeleteGreenhouse(greenhouse.id)}
+                        >
+                          Delete
+                        </button>
+                      </>
+                    )}
+                  </div>
+                )}
+              </div>
+
               <h3 className="card-title">{greenhouse.name}</h3>
               <p className="card-address">{greenhouse.address}</p>
               <div className="card-info">
@@ -195,15 +300,57 @@ export default function Greenhouse() {
                 <p className="card-info-item">
                   {greenhouse.observations === 0
                     ? "No observations recorded"
-                    : `${greenhouse.observations} observation${
-                        greenhouse.observations !== 1 ? "s" : ""
-                      } recorded`}
+                    : `${greenhouse.observations} observation${greenhouse.observations !== 1 ? "s" : ""
+                    } recorded`}
                 </p>
               </div>
             </div>
           ))
         )}
       </div>
+
+      {isAddModalOpen && (
+        <div className="modal-overlay" onClick={handleCloseAddModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3>Add New Greenhouse</h3>
+            <div className="form-group">
+              <label>Name</label>
+              <input
+                value={newGreenhouseData.name}
+                onChange={(e) =>
+                  setNewGreenhouseData({
+                    ...newGreenhouseData,
+                    name: e.target.value,
+                  })
+                }
+                placeholder="e.g. North Tom Z5 - 2025"
+                autoFocus
+              />
+            </div>
+            <div className="form-group">
+              <label>Address</label>
+              <input
+                value={newGreenhouseData.address}
+                onChange={(e) =>
+                  setNewGreenhouseData({
+                    ...newGreenhouseData,
+                    address: e.target.value,
+                  })
+                }
+                placeholder="e.g. 1414 Seacliff Drive..."
+              />
+            </div>
+            <div className="modal-actions">
+              <button className="btn-secondary" onClick={handleCloseAddModal}>
+                Cancel
+              </button>
+              <button className="btn-primary" onClick={handleAddGreenhouse}>
+                Add Greenhouse
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

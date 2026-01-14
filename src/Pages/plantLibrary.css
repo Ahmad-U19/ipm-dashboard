@@ -422,3 +422,67 @@
   border-color: #26b054;
 }
 
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .plant-library-page {
+    padding: 10px;
+  }
+
+  .heading {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .heading-left {
+    width: 100%;
+  }
+
+  .primary-circle-btn {
+    margin-left: auto;
+  }
+
+  .card-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .tabs {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    margin-right: 0;
+  }
+
+  .tab {
+    flex-shrink: 0;
+  }
+
+  .actions {
+    margin-left: 0;
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .search-wrapper {
+    width: 100%;
+  }
+
+  .search-input {
+    width: 100%;
+  }
+
+  .table-footer {
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .modal-content {
+    width: 95%;
+    max-height: 85vh;
+  }
+}

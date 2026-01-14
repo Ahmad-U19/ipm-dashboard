@@ -10,15 +10,19 @@
   position: fixed;
   left: 0;
   top: 0;
-  overflow-y: auto;       /* 👈 ENABLE SCROLL */
-  overscroll-behavior: contain; /* optional, smooth scroll */
+  overflow-y: auto;
+  /* 👈 ENABLE SCROLL */
+  overscroll-behavior: contain;
+  /* optional, smooth scroll */
 }
 
 /* Logo spacing */
-.sidebar > img {
-  width: 200px;        /* ↓ smaller */
+.sidebar>img {
+  width: 200px;
+  /* ↓ smaller */
   height: auto;
-  margin: 0 auto 15px; /* small space below */
+  margin: 0 auto 15px;
+  /* small space below */
   display: block;
 }
 
@@ -27,7 +31,8 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  margin-bottom: 20px; /* 👈 space between top and footer navs */
+  margin-bottom: 20px;
+  /* 👈 space between top and footer navs */
 }
 
 /* Footer section separated */
@@ -36,7 +41,8 @@
   flex-direction: column;
   gap: 6px;
   padding-top: 15px;
-  border-top: 1px solid rgba(255,255,255,0.3); /* subtle divider */
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  /* subtle divider */
   margin-top: auto;
 }
 
@@ -44,7 +50,8 @@
 .nav-item {
   display: flex;
   align-items: center;
-  padding: 8px 10px; /* reduce vertical space */
+  padding: 8px 10px;
+  /* reduce vertical space */
   gap: 8px;
   font-size: 14px;
   color: #ffffff;
@@ -57,7 +64,8 @@
 .img-nav {
   width: 16px;
   height: 16px;
-  flex-shrink: 0; /* 👈 prevents shrinking & misalignment */
+  flex-shrink: 0;
+  /* 👈 prevents shrinking & misalignment */
   object-fit: contain;
 }
 
@@ -70,7 +78,8 @@
 .nav-item.active {
   background: rgba(0, 0, 0, 0.25);
   border-left: 4px solid #fff;
-  padding-left: 8px; /* keeps alignment even with border */
+  padding-left: 8px;
+  /* keeps alignment even with border */
   font-weight: 600;
 }
 
@@ -84,16 +93,17 @@
 }
 
 .sidebar::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,0.4);
+  background: rgba(255, 255, 255, 0.4);
   border-radius: 10px;
 }
 
 .sidebar::-webkit-scrollbar-track {
   background: transparent;
 }
+
 .sidebar {
   scrollbar-width: thin;
-  scrollbar-color: rgba(255,255,255,0.4) transparent;
+  scrollbar-color: rgba(255, 255, 255, 0.4) transparent;
 }
 
 /* Dropdown menu styles */
@@ -102,7 +112,7 @@
   flex-direction: column;
 }
 
-.nav-item-with-dropdown > .nav-item {
+.nav-item-with-dropdown>.nav-item {
   position: relative;
 }
 
@@ -157,4 +167,36 @@
   height: 60%;
   background: #fff;
   border-radius: 0 2px 2px 0;
+}
+
+/* Responsive Sidebar */
+.mobile-close-btn {
+  display: none;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 5px;
+  z-index: 20;
+}
+
+@media (max-width: 1024px) {
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000;
+    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
+  .mobile-close-btn {
+    display: block;
+  }
 }
