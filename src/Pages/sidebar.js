@@ -8,18 +8,24 @@ import assignmentPIC from "../Data/assignment.png"
 import ReportsPIC from "../Data/report.png"
 import USERPIC from "../Data/group.png"
 import librarypic from "../Data/book.png"
-import setting from "../Data/settings.png"
+import settingPic from "../Data/settings.png"
 import logout from "../Data/turn-off.png"
 
 export default function Sidebar({ isMobileOpen, onClose }) {
   const location = useLocation();
   const isLibrariesActive = location.pathname.startsWith('/libraries');
   const isReportsActive = location.pathname.startsWith('/reports');
+  const isSettingsActive = location.pathname.startsWith('/settings') || location.pathname.startsWith('/business-settings');
   const [isReportsExpanded, setIsReportsExpanded] = useState(isReportsActive);
+  const [isSettingsExpanded, setIsSettingsExpanded] = useState(isSettingsActive);
 
   useEffect(() => {
     setIsReportsExpanded(isReportsActive);
   }, [isReportsActive]);
+
+  useEffect(() => {
+    setIsSettingsExpanded(isSettingsActive);
+  }, [isSettingsActive]);
 
   // Close sidebar on route change (mobile)
   useEffect(() => {
@@ -29,6 +35,10 @@ export default function Sidebar({ isMobileOpen, onClose }) {
 
   const toggleReports = () => {
     setIsReportsExpanded(!isReportsExpanded);
+  };
+
+  const toggleSettings = () => {
+    setIsSettingsExpanded(!isSettingsExpanded);
   };
 
   return (
@@ -43,7 +53,7 @@ export default function Sidebar({ isMobileOpen, onClose }) {
       <nav>
         <NavLink to="/greenhouses" className="nav-item">
           <img className="img-nav" src={greenhousePIC} alt="" />
-          Greenhouses
+          <h4>Greenhouses</h4>
         </NavLink>
 
         <div className="nav-item-with-dropdown">
@@ -53,7 +63,7 @@ export default function Sidebar({ isMobileOpen, onClose }) {
             style={{ cursor: 'pointer' }}
           >
             <img className="img-nav" src={ReportsPIC} alt="" />
-            Reports
+            <h4>Reports</h4>
             <span className={`dropdown-arrow ${isReportsExpanded ? 'expanded' : ''}`}>▼</span>
           </div>
           {isReportsExpanded && (
@@ -64,7 +74,7 @@ export default function Sidebar({ isMobileOpen, onClose }) {
                   `nav-dropdown-item ${isActive ? 'active' : ''}`
                 }
               >
-                Observation Status
+                <h4>Observation Status</h4>
               </NavLink>
               <NavLink
                 to="/reports/scouting"
@@ -72,7 +82,7 @@ export default function Sidebar({ isMobileOpen, onClose }) {
                   `nav-dropdown-item ${isActive ? 'active' : ''}`
                 }
               >
-                Scouting Activity
+                <h4>Scouting Activity</h4>
               </NavLink>
               <NavLink
                 to="/reports/advanced"
@@ -80,7 +90,7 @@ export default function Sidebar({ isMobileOpen, onClose }) {
                   `nav-dropdown-item ${isActive ? 'active' : ''}`
                 }
               >
-                Advanced Report
+                <h4>Advanced Report</h4>
               </NavLink>
             </div>
           )}
@@ -88,12 +98,12 @@ export default function Sidebar({ isMobileOpen, onClose }) {
 
         <NavLink to="/assignments" className="nav-item">
           <img className="img-nav" src={assignmentPIC} alt="" />
-          Assignments
+          <h4>Assignments</h4>
         </NavLink>
 
         <NavLink to="/user" className="nav-item">
           <img className="img-nav" src={USERPIC} alt="" />
-          Users
+          <h4>Users</h4>
         </NavLink>
 
         <NavLink
@@ -101,23 +111,51 @@ export default function Sidebar({ isMobileOpen, onClose }) {
           className={`nav-item ${isLibrariesActive ? 'active' : ''}`}
         >
           <img className="img-nav" src={librarypic} alt="" />
-          Libraries
+          <h4>Libraries</h4>
         </NavLink>
 
         <NavLink to="/support" className="nav-item">
           <img className="img-nav" src={imgSupport} alt="" />
-          Support
+          <h4>Support</h4>
         </NavLink>
       </nav>
 
       <div className="sidebar-footer">
-        <NavLink to="/settings" className="nav-item">
-          <img className="img-nav" src={setting} alt="" />
-          Settings
-        </NavLink>
+        <div className="nav-item-with-dropdown">
+          <div
+            className={`nav-item ${isSettingsActive ? 'active' : ''}`}
+            onClick={toggleSettings}
+            style={{ cursor: 'pointer' }}
+          >
+            <img className="img-nav" src={settingPic} alt="" />
+            <h4>Settings</h4>
+            <span className={`dropdown-arrow ${isSettingsExpanded ? 'expanded' : ''}`}>▼</span>
+          </div>
+          {isSettingsExpanded && (
+            <div className="nav-dropdown">
+              <NavLink
+                to="/settings"
+                className={({ isActive }) =>
+                  `nav-dropdown-item ${isActive ? 'active' : ''}`
+                }
+              >
+                <h4>Business Profile</h4>
+              </NavLink>
+              <NavLink
+                to="/business-settings"
+                className={({ isActive }) =>
+                  `nav-dropdown-item ${isActive ? 'active' : ''}`
+                }
+              >
+                <h4>Business Settings</h4>
+              </NavLink>
+            </div>
+          )}
+        </div>
+
         <NavLink to="/" className="nav-item">
           <img className="img-nav" src={logout} alt="" />
-          Logout
+            <h4>Logout</h4>
         </NavLink>
       </div>
 

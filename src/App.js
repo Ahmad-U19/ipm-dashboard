@@ -7,21 +7,25 @@ import Assignment from "./Pages/Assignment.js";
 import User from "./Pages/User.js";
 import Libraries from "./Pages/Libraries.js";
 import Reports from "./Pages/Reports.js";
+import Settings from "./Pages/Settings.js";
+import BusinessSettings from "./Pages/BusinessSettings.js";
 
 export default function App() {
   return (
-      <Routes>
-        <Route path="/" element={<Login />} />
-          
-          <Route element={<DashboardLayout />}>
-          <Route path="/dashboard" element={<Greenhouse />} />
-          <Route path="/greenhouses" element={<Greenhouse />} />
-          <Route path="/reports/*" element={<Reports />} />
-          <Route path="/support" element={<Support223 />} />
-          <Route path="/user" element={<User />} />
-          <Route path="/assignments" element={<Assignment />} />
-          <Route path="/libraries/*" element={<Libraries />} />
-        </Route>
-      </Routes>
+    <Routes>
+      <Route path="/" element={<Login />} />
+
+      <Route element={<DashboardLayout />}>
+        <Route path="/dashboard" element={<Greenhouse />} />
+        <Route path="/greenhouses" element={<Greenhouse />} />
+        <Route path="/reports/*" element={<Reports />} />
+        <Route path="/support" element={<Support223 />} />
+        <Route path="/user" element={<User />} />
+        <Route path="/assignments" element={<Assignment />} />
+        <Route path="/libraries/*" element={<Libraries />} />
+        <Route path="/settings" element={<Settings />} />
+        <Route path="/business-settings" element={<BusinessSettings />} />
+      </Route>
+    </Routes>
   );
 }

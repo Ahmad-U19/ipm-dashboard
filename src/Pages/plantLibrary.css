@@ -486,3 +486,35 @@
     max-height: 85vh;
   }
 }
+
+@media (max-width: 480px) {
+  .heading h4 {
+    font-size: 20px;
+  }
+
+  .heading-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .primary-circle-btn {
+    width: 42px;
+    height: 42px;
+    font-size: 24px;
+  }
+
+  .card {
+    padding: 12px;
+  }
+
+  .plant-table thead th,
+  .plant-table tbody td {
+    padding: 10px 8px;
+    font-size: 13px;
+  }
+
+  .goto-page {
+    margin-left: 0;
+    margin-top: 8px;
+  }
+}

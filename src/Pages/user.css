@@ -236,3 +236,24 @@
     align-items: center;
   }
 }
+
+@media (max-width: 480px) {
+  .heading h4 {
+    font-size: 20px;
+  }
+
+  .heading-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .card {
+    padding: 12px;
+  }
+
+  .user-table thead th,
+  .user-table tbody td {
+    padding: 10px 8px;
+    font-size: 13px;
+  }
+}

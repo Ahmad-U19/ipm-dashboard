@@ -1,4 +1,6 @@
 * {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
   font-family: "Segoe UI", sans-serif;
 }
@@ -22,7 +24,6 @@ img {
   display: block;
   width: 100%;
   height: auto;
-  margin-top: 30px; /* breathing room */
 }
 
 /* ===============================
@@ -41,10 +42,15 @@ img {
   height: 60%;
 }
 
-.green-bg img{
-  height: 90%;
+.green-bg img {
+  height: 100%;
   width: 100%;
+  margin-top: 0;
+  object-fit: cover;
+}
 
+.img-class img {
+  margin-top: 30px;
 }
 
 /* LOGIN CONTAINER */

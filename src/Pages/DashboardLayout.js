@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import Sidebar from "./sidebar";
 import "./dashboardLayout.css";
+import logo from "../Data/IPMScoutek-logo-white-480x97.webp";
 
 export default function DashboardLayout() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
@@ -10,6 +11,7 @@ export default function DashboardLayout() {
     <div className="dashboard-layout">
       {/* Mobile Header / Toggle */}
       <div className="mobile-header">
+        <img src={logo} alt="IPM Logo" className="mobile-logo-img" />
         <button
           className="mobile-toggle-btn"
           onClick={() => setIsMobileOpen(!isMobileOpen)}
@@ -17,7 +19,6 @@ export default function DashboardLayout() {
         >
           ☰
         </button>
-        <div className="mobile-logo-text">IPM Scoutek</div>
       </div>
 
       <Sidebar
