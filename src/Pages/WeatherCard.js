@@ -4,46 +4,7 @@ export default function WeatherCard() {
     const [weather, setWeather] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [inputCity, setInputCity] = useState("");
-
     const API_KEY = process.env.REACT_APP_OPENWEATHER_API_KEY;
-
-    // 🌍 Fetch weather by city name
-    const fetchWeatherByCity = async (city) => {
-        setLoading(true);
-        setError(null);
-        try {
-            if (!API_KEY) {
-                setError("API key missing");
-                setLoading(false);
-                return;
-            }
-
-            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${API_KEY}`;
-            const res = await fetch(url);
-
-            if (!res.ok) {
-                if (res.status === 404) {
-                    setError(`City "${city}" not found.`);
-                } else {
-                    setError("Failed to fetch weather.");
-                }
-                setLoading(false);
-                return;
-            }
-
-            const data = await res.json();
-            if (data?.main) {
-                setWeather(data);
-            } else {
-                setError("Data unavailable");
-            }
-        } catch (err) {
-            setError("Network error");
-        } finally {
-            setLoading(false);
-        }
-    };
 
     const fetchWeatherByCoords = async (lat, lon) => {
         setLoading(true);
@@ -58,14 +19,6 @@ export default function WeatherCard() {
             setError("Could not get local weather");
         } finally {
             setLoading(false);
-        }
-    };
-
-    const handleSearch = (e) => {
-        e.preventDefault();
-        if (inputCity.trim()) {
-            fetchWeatherByCity(inputCity);
-            setInputCity("");
         }
     };
 
