@@ -49,15 +49,16 @@
 /* Universal nav item styling */
 .nav-item {
   display: flex;
-  align-items: center;
-  padding: 10px 15px;
-  gap: 12px;
-  font-size: 15px;
-  color: #ffffff;
-  text-decoration: none;
-  border-radius: 6px;
-  transition: all 0.2s ease;
-  line-height: normal;
+    align-items: center;
+    padding: 10px 15px;
+    gap: 12px;
+    font-size: 15px;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    line-height: normal;
+    margin-top: 25px;
 }
 
 .nav-item h4 {
@@ -65,7 +66,6 @@
   font-weight: 500;
   font-weight: light;
   padding: 1px;
-  margin-top: 30px;
 }
 
 /* Icons */

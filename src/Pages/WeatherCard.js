@@ -4,164 +4,151 @@ export default function WeatherCard() {
     const [weather, setWeather] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [inputCity, setInputCity] = useState("");
 
     const API_KEY = process.env.REACT_APP_OPENWEATHER_API_KEY;
-    const DEFAULT_CITY = "Ontario";
 
-    // 🚨 Spelling Fix Map
-    const CITY_NAME_CORRECTIONS = {
-        "Lahor": "Lahore",
-        "Lahor Cantonment": "Lahore Cantt",
-        "Raiwand": "Raiwind",
-        "Ontario": "Ontario"
-    };
-
-    // ✨ Format & Correct City Name
-    const formatCity = (name) => {
-        if (!name) return DEFAULT_CITY;
-        const corrected = CITY_NAME_CORRECTIONS[name] || name;
-        return corrected
-            .split(" ")
-            .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-            .join(" ");
-    };
-
-    // 🌍 Fetch weather by city
+    // 🌍 Fetch weather by city name
     const fetchWeatherByCity = async (city) => {
+        setLoading(true);
+        setError(null);
         try {
             if (!API_KEY) {
-                setError("API key not configured. Please set REACT_APP_OPENWEATHER_API_KEY in your .env file.");
+                setError("API key missing");
                 setLoading(false);
                 return;
             }
 
             const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${API_KEY}`;
             const res = await fetch(url);
-            
+
             if (!res.ok) {
-                const errorData = await res.json().catch(() => ({}));
-                if (res.status === 401) {
-                    setError("Invalid API key. Please check your OpenWeather API key.");
-                } else if (res.status === 404) {
+                if (res.status === 404) {
                     setError(`City "${city}" not found.`);
                 } else {
-                    setError(`Failed to fetch weather: ${errorData.message || res.statusText}`);
+                    setError("Failed to fetch weather.");
                 }
                 setLoading(false);
                 return;
             }
 
             const data = await res.json();
-            if (data?.main && data?.weather) {
+            if (data?.main) {
                 setWeather(data);
             } else {
-                setError("Weather data not available");
+                setError("Data unavailable");
             }
         } catch (err) {
-            setError(`Failed to fetch weather: ${err.message || "Network error"}`);
+            setError("Network error");
         } finally {
             setLoading(false);
         }
     };
 
-    // 📍 Auto detect location + correct city name
-    useEffect(() => {
-        if (!API_KEY) {
-            setError("API key not configured. Please set REACT_APP_OPENWEATHER_API_KEY in your .env file.");
+    const fetchWeatherByCoords = async (lat, lon) => {
+        setLoading(true);
+        setError(null);
+        try {
+            const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`;
+            const res = await fetch(url);
+            if (!res.ok) throw new Error("Failed");
+            const data = await res.json();
+            setWeather(data);
+        } catch (err) {
+            setError("Could not get local weather");
+        } finally {
             setLoading(false);
-            return;
         }
+    };
 
-        const getWeather = async (lat, lon) => {
-            try {
-                const geoUrl = `https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=1&appid=${API_KEY}`;
-                const geoRes = await fetch(geoUrl);
-                
-                if (!geoRes.ok) {
-                    throw new Error("Failed to get location");
-                }
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (inputCity.trim()) {
+            fetchWeatherByCity(inputCity);
+            setInputCity("");
+        }
+    };
 
-                const geoData = await geoRes.json();
-
-                if (!geoData || !geoData[0]) {
-                    throw new Error("Location data not available");
-                }
-
-                let rawName = geoData[0]?.name || DEFAULT_CITY;
-                const state = geoData[0]?.state || "";
-
-                const BAD_KEYWORDS = ["Town", "Cantt", "Cantonment", "Tehsil", "City", "District"];
-                BAD_KEYWORDS.forEach(k => {
-                    if (rawName.includes(k)) rawName = rawName.replace(k, "").trim();
-                });
-
-                if (rawName.length < 3 || BAD_KEYWORDS.some(k => rawName.includes(k))) {
-                    rawName = state || DEFAULT_CITY;
-                }
-
-                const finalCityName = formatCity(rawName);
-
-                const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`;
-                const weatherRes = await fetch(weatherUrl);
-                
-                if (!weatherRes.ok) {
-                    throw new Error("Failed to get weather data");
-                }
-
-                const weatherData = await weatherRes.json();
-
-                if (!weatherData.main) {
-                    setError("Weather data not available");
-                } else {
-                    weatherData.name = finalCityName;
-                    setWeather(weatherData);
-                }
-            } catch (err) {
-                console.error("Error fetching weather by location:", err);
-                fetchWeatherByCity(DEFAULT_CITY);
-            } finally {
-                setLoading(false);
-            }
-        };
-
+    const requestLocation = () => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
-                pos => getWeather(pos.coords.latitude, pos.coords.longitude),
-                () => fetchWeatherByCity(DEFAULT_CITY)
+                pos => fetchWeatherByCoords(pos.coords.latitude, pos.coords.longitude),
+                (err) => {
+                    setError("Location permission denied.");
+                    setLoading(false);
+                }
             );
         } else {
-            fetchWeatherByCity(DEFAULT_CITY);
+            setError("Geolocation not supported");
+            setLoading(false);
         }
+    };
 
+    // 📍 Auto detect location on initial load
+    useEffect(() => {
+        requestLocation();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
- 
 
-
-    if (loading) return <p>Loading weather...</p>;
-    if (error) return <p style={{ color: "red", padding: "10px" }}>{error}</p>;
-    if (!weather) return <p>No weather data available</p>;
-
-    const cityName = formatCity(weather.name);
+    const getWeatherIcon = (temp) => {
+        if (temp > 25) return "☀️";
+        if (temp > 15) return "⛅";
+        return "☁️";
+    };
 
     return (
         <div
             style={{
-                background: "rgb(255, 255, 255)",
+                background: "#ffffff",
+                color: "#333333",
                 padding: "15px",
-                borderRadius: "20px",
-                boxShadow: "0 0 10px rgba(0,0,0,0.1)",
+                borderRadius: "10px",
+                border: "1px solid #e0e0e0",
+                boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
                 width: "240px",
-                marginLeft: "13px",
+                margin: "10px 0",
+                fontFamily: "inherit"
             }}
         >
-            <h3>Weather</h3>
-            <h2>{cityName}</h2>
-            <p>🌡 Temperature: {weather.main?.temp ?? "-"} °C</p>
-            <p>🌧 Condition: {weather.weather?.[0]?.description ?? "-"}</p>
-            <p>💨 Wind: {weather.wind?.speed ?? "-"} m/s</p>
-            <p>💧 Humidity: {weather.main?.humidity ?? "-"}%</p>
-        </div>
+            <h3 style={{ margin: "0 0 15px 0", fontSize: "1.1rem", fontWeight: "600", textAlign: "center", opacity: "0.9" }}>
+                Weather Forecast
+            </h3>
 
+            <div style={{ textAlign: "center", minHeight: "150px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                {loading ? (
+                    <div className="loader" style={{ fontSize: "0.9rem", fontStyle: "italic" }}>Updating...</div>
+                ) : error ? (
+                    <div style={{ background: "rgba(255,0,0,0.2)", padding: "10px", borderRadius: "10px", fontSize: "0.85rem" }}>
+                        ⚠️ {error}
+                    </div>
+                ) : weather ? (
+                    <>
+                        <h2 style={{ margin: "0", fontSize: "1.6rem", fontWeight: "700" }}>{weather.name}</h2>
+                        <div style={{ fontSize: "3.5rem", margin: "10px 0", filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.2))" }}>
+                            {getWeatherIcon(weather.main.temp)}
+                        </div>
+                        <div style={{ fontSize: "2rem", fontWeight: "300", marginBottom: "15px" }}>
+                            {Math.round(weather.main?.temp)}°C
+                        </div>
+                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", fontSize: "0.8rem" }}>
+                            <div style={{ background: "rgba(255,255,255,0.1)", padding: "8px", borderRadius: "12px" }}>
+                                <span style={{ opacity: 0.7 }}>Humidity</span><br />
+                                <strong>{weather.main?.humidity}%</strong>
+                            </div>
+                            <div style={{ background: "rgba(255,255,255,0.1)", padding: "8px", borderRadius: "12px" }}>
+                                <span style={{ opacity: 0.7 }}>Wind</span><br />
+                                <strong>{Math.round(weather.wind?.speed)} m/s</strong>
+                            </div>
+                            <div style={{ background: "rgba(255,255,255,0.1)", padding: "8px", borderRadius: "12px", gridColumn: "span 2" }}>
+                                <span style={{ opacity: 0.7 }}>Condition</span><br />
+                                <strong style={{ textTransform: "capitalize" }}>{weather.weather?.[0]?.description}</strong>
+                            </div>
+                        </div>
+                    </>
+                ) : (
+                    <p style={{ opacity: 0.6 }}>No data available</p>
+                )}
+            </div>
+        </div>
     );
 }
