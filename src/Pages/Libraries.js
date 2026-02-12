@@ -1,6 +1,9 @@
 import React, { useEffect } from "react";
 import { Routes, Route, NavLink, useNavigate } from "react-router-dom";
 import PlantLibrary from "./PlantLibrary";
+import PestLibrary from "./PestLibrary";
+import DiseaseLibrary from "./DiseaseLibrary";
+import OtherObservationsLibrary from "./OtherObservationsLibrary";
 import "./libraries.css";
 
 export default function Libraries() {
@@ -70,15 +73,9 @@ export default function Libraries() {
       <div className="libraries-content">
         <Routes>
           <Route path="plants" element={<PlantLibrary />} />
-          <Route path="pests" element={<div className="coming-soon">Pests Library - Coming Soon</div>} />
-          <Route
-            path="diseases"
-            element={<div className="coming-soon">Diseases Library - Coming Soon</div>}
-          />
-          <Route
-            path="other-observations"
-            element={<div className="coming-soon">Other Observations Library - Coming Soon</div>}
-          />
+          <Route path="pests" element={<PestLibrary />} />
+          <Route path="diseases" element={<DiseaseLibrary />} />
+          <Route path="other-observations" element={<OtherObservationsLibrary />} />
           <Route
             path="beneficials"
             element={<div className="coming-soon">Beneficials Library - Coming Soon</div>}
