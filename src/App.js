@@ -9,6 +9,8 @@ import Libraries from "./Pages/Libraries.js";
 import Reports from "./Pages/Reports.js";
 import Settings from "./Pages/Settings.js";
 import BusinessSettings from "./Pages/BusinessSettings.js";
+import GreenhouseSettings from "./Pages/GreenhouseSettings.js";
+import GreenhouseApplications from "./Pages/GreenhouseApplications.js";
 
 export default function App() {
   return (
@@ -18,6 +20,8 @@ export default function App() {
       <Route element={<DashboardLayout />}>
         <Route path="/dashboard" element={<Greenhouse />} />
         <Route path="/greenhouses" element={<Greenhouse />} />
+        <Route path="/greenhouses/:id/settings" element={<GreenhouseSettings />} />
+        <Route path="/greenhouses/:id/applications" element={<GreenhouseApplications />} />
         <Route path="/reports/*" element={<Reports />} />
         <Route path="/support" element={<Support223 />} />
         <Route path="/user" element={<User />} />

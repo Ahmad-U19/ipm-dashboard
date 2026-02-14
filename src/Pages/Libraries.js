@@ -4,6 +4,8 @@ import PlantLibrary from "./PlantLibrary";
 import PestLibrary from "./PestLibrary";
 import DiseaseLibrary from "./DiseaseLibrary";
 import OtherObservationsLibrary from "./OtherObservationsLibrary";
+import BeneficialLibrary from "./BeneficialLibrary";
+import SprayLibrary from "./SprayLibrary";
 import "./libraries.css";
 
 export default function Libraries() {
@@ -78,9 +80,9 @@ export default function Libraries() {
           <Route path="other-observations" element={<OtherObservationsLibrary />} />
           <Route
             path="beneficials"
-            element={<div className="coming-soon">Beneficials Library - Coming Soon</div>}
+            element={<BeneficialLibrary />}
           />
-          <Route path="sprays" element={<div className="coming-soon">Sprays Library - Coming Soon</div>} />
+          <Route path="sprays" element={<SprayLibrary />} />
           <Route path="" element={<PlantLibrary />} />
         </Routes>
       </div>

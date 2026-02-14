@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import greenhousePIC from "../Data/greenhouse.png";
 import "./greenhouse.css";
 
@@ -39,6 +40,7 @@ const SAMPLE_GREENHOUSES = [
 ];
 
 export default function Greenhouse() {
+  const navigate = useNavigate();
   const [greenhouses, setGreenhouses] = useState(SAMPLE_GREENHOUSES);
   const [activeTab, setActiveTab] = useState("active");
   const [search, setSearch] = useState("");
@@ -159,12 +161,24 @@ export default function Greenhouse() {
     setActiveMenuId(activeMenuId === greenhouseId ? null : greenhouseId);
   };
 
+  const handleCloneGreenhouse = (greenhouse) => {
+    const clonedGreenhouse = {
+      ...greenhouse,
+      id: Date.now(),
+      name: `${greenhouse.name} (Clone)`,
+      status: "active",
+    };
+    setGreenhouses([clonedGreenhouse, ...greenhouses]);
+    setActiveMenuId(null);
+  };
+
   const handleArchiveGreenhouse = (id) => {
     setGreenhouses(
       greenhouses.map((gh) =>
         gh.id === id ? { ...gh, status: "archived" } : gh
       )
     );
+    setActiveMenuId(null);
   };
 
   const handleUnarchiveGreenhouse = (id) => {
@@ -173,10 +187,12 @@ export default function Greenhouse() {
         gh.id === id ? { ...gh, status: "active" } : gh
       )
     );
+    setActiveMenuId(null);
   };
 
   const handleDeleteGreenhouse = (id) => {
     setGreenhouses(greenhouses.filter((gh) => gh.id !== id));
+    setActiveMenuId(null);
   };
 
   return (
@@ -265,12 +281,32 @@ export default function Greenhouse() {
                 {activeMenuId === greenhouse.id && (
                   <div className="dropdown-menu">
                     {greenhouse.status === "active" ? (
-                      <button
-                        className="dropdown-item"
-                        onClick={() => handleArchiveGreenhouse(greenhouse.id)}
-                      >
-                        Archive
-                      </button>
+                      <>
+                        <button
+                          className="dropdown-item"
+                          onClick={() => handleCloneGreenhouse(greenhouse)}
+                        >
+                          Clone greenhouse
+                        </button>
+                        <button
+                          className="dropdown-item"
+                          onClick={() => handleArchiveGreenhouse(greenhouse.id)}
+                        >
+                          Archive greenhouse
+                        </button>
+                        <button
+                          className="dropdown-item"
+                          onClick={() => navigate(`/greenhouses/${greenhouse.id}/applications`)}
+                        >
+                          Applications
+                        </button>
+                        <button
+                          className="dropdown-item"
+                          onClick={() => navigate(`/greenhouses/${greenhouse.id}/settings`)}
+                        >
+                          Settings
+                        </button>
+                      </>
                     ) : (
                       <>
                         <button
