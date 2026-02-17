@@ -3,7 +3,7 @@ import librarypic from "../Data/book.png";
 import "./beneficialLibrary.css";
 
 // Sample beneficial data based on the image provided
-const SAMPLE_BENEFICIALS = [
+export const SAMPLE_BENEFICIALS = [
     {
         id: 1,
         icon: "🐞",

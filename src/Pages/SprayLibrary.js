@@ -3,7 +3,7 @@ import librarypic from "../Data/book.png";
 import "./sprayLibrary.css";
 
 // Sample spray data based on the image provided
-const SAMPLE_SPRAYS = [
+export const SAMPLE_SPRAYS = [
     {
         id: 1,
         productName: "Abode essential oil",

@@ -3,7 +3,7 @@ import librarypic from "../Data/book.png";
 import "./plantLibrary.css";
 
 // Sample plant data - replace with actual API/database call
-const SAMPLE_PLANTS = [
+export const SAMPLE_PLANTS = [
   {
     id: 1,
     icon: "🌱",
@@ -276,10 +276,10 @@ export default function PlantLibrary() {
 
     // Add to plants list
     setPlants((prev) => [newPlant, ...prev]);
-    
+
     // Reset form and close modal
     handleCloseModal();
-    
+
     // Reset to first page to show the new plant
     setCurrentPage(1);
   };
@@ -291,8 +291,8 @@ export default function PlantLibrary() {
           <img className="heading-icon" src={librarypic} alt="Plant Library" />
           <h4>Plant Library</h4>
         </div>
-        <button 
-          className="primary-circle-btn" 
+        <button
+          className="primary-circle-btn"
           aria-label="Add plant"
           onClick={handleOpenModal}
         >

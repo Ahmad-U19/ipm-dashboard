@@ -3,7 +3,7 @@ import librarypic from "../Data/book.png";
 import "./diseaseLibrary.css";
 
 // Sample disease data - based on the image provided
-const SAMPLE_DISEASES = [
+export const SAMPLE_DISEASES = [
     {
         id: 1,
         icon: "🦠",

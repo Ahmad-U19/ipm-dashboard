@@ -3,7 +3,7 @@ import librarypic from "../Data/book.png";
 import "./pestLibrary.css";
 
 // Sample pest data - replace with actual API/database call
-const SAMPLE_PESTS = [
+export const SAMPLE_PESTS = [
     {
         id: 1,
         icon: "🐜",

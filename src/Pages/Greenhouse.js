@@ -3,41 +3,7 @@ import { useNavigate } from "react-router-dom";
 import greenhousePIC from "../Data/greenhouse.png";
 import "./greenhouse.css";
 
-// Sample greenhouse data
-const SAMPLE_GREENHOUSES = [
-  {
-    id: 1,
-    name: "North Tom Z4 - 2025",
-    address: "1414 Seacliff Drive, Kingsville, ON, Canada",
-    lastWeekScouted: 31,
-    observations: 0,
-    status: "active",
-  },
-  {
-    id: 2,
-    name: "North Tom Z3 - 2025",
-    address: "1414 Seacliff Drive, Kingsville, ON, Canada",
-    lastWeekScouted: 31,
-    observations: 0,
-    status: "active",
-  },
-  {
-    id: 3,
-    name: "North Tom Z2 - 2025",
-    address: "1414 Seacliff Drive, Kingsville, ON, Canada",
-    lastWeekScouted: 31,
-    observations: 0,
-    status: "active",
-  },
-  {
-    id: 4,
-    name: "North Tom Z1 - 2025",
-    address: "1414 Seacliff Drive, Kingsville, ON, Canada",
-    lastWeekScouted: 31,
-    observations: 0,
-    status: "active",
-  },
-];
+import { SAMPLE_GREENHOUSES } from "../Data/greenhouseData";
 
 export default function Greenhouse() {
   const navigate = useNavigate();
@@ -197,7 +163,7 @@ export default function Greenhouse() {
 
   return (
     <div className="greenhouse-page">
-      <div className="greenhouse-header">
+      <div className="greenhouse-header-1">
         <div className="header-left">
           <div className="header-title-section">
             <img className="header-icon" src={greenhousePIC} alt="Greenhouses" />

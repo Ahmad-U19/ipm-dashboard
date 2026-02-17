@@ -88,7 +88,7 @@ export default function Login() {
 
           {error && <p className="error">{error}</p>}
 
-          <button type="submit">{t.enter}</button>
+          <button className="enter-btn" type="submit">{t.enter}</button>
         </form>
 
         <p className="forgot">{t.forgot}</p>
