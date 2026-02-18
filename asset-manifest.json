@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/ipm-dashboard/static/css/main.1fcc9d85.css",
-    "main.js": "/ipm-dashboard/static/js/main.7d110752.js",
+    "main.css": "/ipm-dashboard/static/css/main.b7b59dc1.css",
+    "main.js": "/ipm-dashboard/static/js/main.743af17e.js",
     "static/media/bag-removebg-preview.png": "/ipm-dashboard/static/media/bag-removebg-preview.90c85c6509040216b0ef.png",
     "static/media/settings.png": "/ipm-dashboard/static/media/settings.685099a5042544f1b8f8.png",
     "static/media/maintenance.png": "/ipm-dashboard/static/media/maintenance.1427346408390ee7fd28.png",
@@ -14,11 +14,11 @@
     "static/media/IPMScoutek-logo-white-480x97.webp": "/ipm-dashboard/static/media/IPMScoutek-logo-white-480x97.f672ffba41e45827e4e2.webp",
     "static/media/IPM_login_background.7db876e5.svg": "/ipm-dashboard/static/media/IPM_login_background.7db876e5.575725eaf8fe01d2aa65d28dfb0c85a9.svg",
     "index.html": "/ipm-dashboard/index.html",
-    "main.1fcc9d85.css.map": "/ipm-dashboard/static/css/main.1fcc9d85.css.map",
-    "main.7d110752.js.map": "/ipm-dashboard/static/js/main.7d110752.js.map"
+    "main.b7b59dc1.css.map": "/ipm-dashboard/static/css/main.b7b59dc1.css.map",
+    "main.743af17e.js.map": "/ipm-dashboard/static/js/main.743af17e.js.map"
   },
   "entrypoints": [
-    "static/css/main.1fcc9d85.css",
-    "static/js/main.7d110752.js"
+    "static/css/main.b7b59dc1.css",
+    "static/js/main.743af17e.js"
   ]
 }
