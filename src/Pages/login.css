@@ -43,7 +43,7 @@ img {
 }
 
 .green-bg img {
-  height: 100%;
+  height: 140%;
   width: 100%;
   margin-top: 0;
   object-fit: cover;
@@ -80,10 +80,10 @@ input {
   border: 1px solid #ccc;
 }
 
-enter-btn {
+.enter-btn-2 {
   width: 100%;
   padding: 12px;
-  background: #29b150;
+  background: #132217;
   color: white;
   border: none;
   font-size: 16px;

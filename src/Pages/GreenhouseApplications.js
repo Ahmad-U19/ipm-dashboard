@@ -405,7 +405,7 @@ const GreenhouseApplications = () => {
         const encodedUri = encodeURI(csvContent);
         const link = document.createElement("a");
         link.setAttribute("href", encodedUri);
-        link.setAttribute("download", "greenhouse_applications.csv");
+        link.setAttribute("download", `${greenhouse.name}_applications.csv`);
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../DataBase/supabaseClient"; // ⬅️ important!
 import "./login.css";
@@ -58,6 +58,10 @@ export default function Login() {
     navigate("/dashboard"); // redirect after login
   };
 
+  useEffect(() => {
+   document.title = "IPM Scoutek";
+  }, []);
+
   return (
     <div className="login-page">
       <div className="green-bg">
@@ -88,7 +92,7 @@ export default function Login() {
 
           {error && <p className="error">{error}</p>}
 
-          <button className="enter-btn" type="submit">{t.enter}</button>
+          <button className="enter-btn-2" type="submit">{t.enter}</button>
         </form>
 
         <p className="forgot">{t.forgot}</p>
