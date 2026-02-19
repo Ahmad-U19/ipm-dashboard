@@ -86,6 +86,24 @@ const SAMPLE_OTHER_OBSERVATIONS = [
     { id: 2, scout: "Jane Smith", count: 5, observation: "Beneficials active", location: "Row 8", date: "2025-07-28", notes: "Good population of ladybugs." },
 ];
 
+const FilterBar = ({ children, rightActions, className }) => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    return (
+        <div className={`filters-bar ${className || ""}`}>
+            <div
+                className="filter-group"
+                onClick={() => setIsOpen(!isOpen)}
+                style={{ cursor: "pointer", minWidth: "60px" }}
+            >
+                <span className="filter-label">Filters {isOpen ? "▲" : "▼"}</span>
+            </div>
+            {isOpen && children}
+            {rightActions && <div style={{ marginLeft: "auto" }}>{rightActions}</div>}
+        </div>
+    );
+};
+
 const FilterDropdown = ({ label, options, selected, onChange }) => {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
@@ -201,6 +219,15 @@ const OverviewView = ({ greenhouse }) => {
 const MapView = () => {
     // Generate some dummy rows
     const rows = Array.from({ length: 20 }, (_, i) => i + 1);
+    const [filters, setFilters] = useState({
+        pressure: []
+    });
+
+    const pressureOptions = ["Low", "Medium", "High"];
+
+    const handleFilterChange = (category, val) => {
+        setFilters(prev => ({ ...prev, [category]: val }));
+    };
 
     return (
         <div className="map-view-container">
@@ -214,7 +241,14 @@ const MapView = () => {
                     </div>
                 </div>
                 <div className="map-filters">
-                    {/* Add functionality later */}
+                    <FilterBar className="map-filter-bar">
+                        <FilterDropdown
+                            label="Pressure"
+                            options={pressureOptions}
+                            selected={filters.pressure}
+                            onChange={(val) => handleFilterChange('pressure', val)}
+                        />
+                    </FilterBar>
                 </div>
             </div>
 
@@ -237,17 +271,56 @@ const MapView = () => {
 };
 
 const NotesView = () => {
+    const [filters, setFilters] = useState({
+        pests: [],
+        diseases: [],
+        plants: [],
+        other: [],
+        beneficials: [],
+    });
+
+    const pestOptions = useMemo(() => SAMPLE_PESTS.map(p => p.name), []);
+    const diseaseOptions = useMemo(() => SAMPLE_DISEASES.map(d => d.name), []);
+    const plantOptions = useMemo(() => SAMPLE_PLANTS.map(p => p.name), []);
+    const beneficialOptions = useMemo(() => SAMPLE_BENEFICIALS.map(b => b.name), []);
+    const otherOptions = ["General", "Maintenance", "Irrigation"];
+
+    const handleFilterChange = (category, selectedValues) => {
+        setFilters((prev) => ({
+            ...prev,
+            [category]: selectedValues,
+        }));
+    };
+
+    const filteredNotes = useMemo(() => {
+        return SAMPLE_NOTES.filter(note => {
+            const matchesCategory = (category, options) => {
+                if (options.length === 0) return true;
+                // Simple textual match since data is inconsistent
+                const text = (note.observation + " " + note.content + " " + note.type).toLowerCase();
+                return options.some(opt => text.includes(opt.toLowerCase()));
+            };
+
+            return matchesCategory('pests', filters.pests) &&
+                matchesCategory('diseases', filters.diseases) &&
+                matchesCategory('plants', filters.plants) &&
+                matchesCategory('other', filters.other) &&
+                matchesCategory('beneficials', filters.beneficials);
+        });
+    }, [filters]);
+
     return (
         <div className="notes-view">
-            <div className="filters-bar">
-                <div className="filter-group"><span className="filter-label">Filters ▼</span></div>
-                <div className="filter-group"><span className="filter-label">Plants:</span> <span className="filter-value">All</span></div>
-                <div className="filter-group"><span className="filter-label">Pests:</span> <span className="filter-value">All</span></div>
-                <div className="filter-group"><span className="filter-label">Diseases:</span> <span className="filter-value">All</span></div>
-                <div className="filter-group"><span className="filter-label">Other:</span> <span className="filter-value">All</span></div>
-                <div className="filter-group"><span className="filter-label">Beneficials:</span> <span className="filter-value">All</span></div>
-                <button className="apply-btn">APPLY</button>
-            </div>
+            <FilterBar
+                rightActions={<button className="apply-btn">APPLY</button>} // Keeping button for visual consistency with previous design, though filtering is instant
+            >
+                <FilterDropdown label="Plants" options={plantOptions} selected={filters.plants} onChange={(val) => handleFilterChange('plants', val)} />
+                <FilterDropdown label="Pests" options={pestOptions} selected={filters.pests} onChange={(val) => handleFilterChange('pests', val)} />
+                <FilterDropdown label="Diseases" options={diseaseOptions} selected={filters.diseases} onChange={(val) => handleFilterChange('diseases', val)} />
+                <FilterDropdown label="Other" options={otherOptions} selected={filters.other} onChange={(val) => handleFilterChange('other', val)} />
+                <FilterDropdown label="Beneficials" options={beneficialOptions} selected={filters.beneficials} onChange={(val) => handleFilterChange('beneficials', val)} />
+            </FilterBar>
+
             <div className="search-bar-row">
                 <div className="note-info">Notes in week 32</div>
                 <input type="text" placeholder="Search Notes" className="search-input-small" />
@@ -266,32 +339,56 @@ const NotesView = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {SAMPLE_NOTES.map(note => (
-                        <tr key={note.id}>
-                            <td>{note.scout}</td>
-                            <td>{note.pressure}</td>
-                            <td>{note.observation}</td>
-                            <td>{note.type}</td>
-                            <td>{note.location}</td>
-                            <td>{note.date}</td>
-                            <td>{note.content}</td>
-                        </tr>
-                    ))}
+                    {filteredNotes.length === 0 ? (
+                        <tr><td colSpan="7" className="empty-table-message">No notes match filters</td></tr>
+                    ) : (
+                        filteredNotes.map(note => (
+                            <tr key={note.id}>
+                                <td>{note.scout}</td>
+                                <td>{note.pressure}</td>
+                                <td>{note.observation}</td>
+                                <td>{note.type}</td>
+                                <td>{note.location}</td>
+                                <td>{note.date}</td>
+                                <td>{note.content}</td>
+                            </tr>
+                        ))
+                    )}
                 </tbody>
             </table>
-            <div className="empty-state-small">No more notes</div>
+            <div className="empty-state-small">{filteredNotes.length === 0 ? "No results" : "No more notes"}</div>
         </div>
     );
 };
 
 const OtherObservationsView = () => {
+    const [filters, setFilters] = useState({
+        observations: [],
+        scouts: []
+    });
+
+    const observationOptions = useMemo(() => [...new Set(SAMPLE_OTHER_OBSERVATIONS.map(o => o.observation))], []);
+    const scoutOptions = useMemo(() => [...new Set(SAMPLE_OTHER_OBSERVATIONS.map(o => o.scout))], []);
+
+    const handleFilterChange = (category, val) => {
+        setFilters(prev => ({ ...prev, [category]: val }));
+    };
+
+    const filteredObs = useMemo(() => {
+        return SAMPLE_OTHER_OBSERVATIONS.filter(obs => {
+            const matchObs = filters.observations.length === 0 || filters.observations.includes(obs.observation);
+            const matchScout = filters.scouts.length === 0 || filters.scouts.includes(obs.scout);
+            return matchObs && matchScout;
+        });
+    }, [filters]);
+
     return (
         <div className="other-observations-view">
-            <div className="filters-bar">
-                <div className="filter-group"><span className="filter-label">Filters ▼</span></div>
-                <div className="filter-group"><span className="filter-label">Observations:</span><span className="filter-value">None</span></div>
-                <div className="filter-group"><span className="filter-label">Scouts:</span><span className="filter-value">All</span></div>
-            </div>
+            <FilterBar>
+                <FilterDropdown label="Observations" options={observationOptions} selected={filters.observations} onChange={(val) => handleFilterChange('observations', val)} />
+                <FilterDropdown label="Scouts" options={scoutOptions} selected={filters.scouts} onChange={(val) => handleFilterChange('scouts', val)} />
+            </FilterBar>
+
             <div className="search-bar-row">
                 <div className="note-info">Other Observations in Week 32</div>
                 <input type="text" placeholder="Search Notes" className="search-input-small" />
@@ -309,16 +406,20 @@ const OtherObservationsView = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {SAMPLE_OTHER_OBSERVATIONS.map(obs => (
-                        <tr key={obs.id}>
-                            <td>{obs.scout}</td>
-                            <td>{obs.count}</td>
-                            <td>{obs.observation}</td>
-                            <td>{obs.location}</td>
-                            <td>{obs.date}</td>
-                            <td>{obs.notes}</td>
-                        </tr>
-                    ))}
+                    {filteredObs.length === 0 ? (
+                        <tr><td colSpan="6" className="empty-table-message">No matches</td></tr>
+                    ) : (
+                        filteredObs.map(obs => (
+                            <tr key={obs.id}>
+                                <td>{obs.scout}</td>
+                                <td>{obs.count}</td>
+                                <td>{obs.observation}</td>
+                                <td>{obs.location}</td>
+                                <td>{obs.date}</td>
+                                <td>{obs.notes}</td>
+                            </tr>
+                        ))
+                    )}
                 </tbody>
             </table>
             <div className="empty-state-small">No other observations</div>
@@ -511,11 +612,9 @@ const GreenhouseApplications = () => {
                 {activeTab === "Notes" && <NotesView />}
                 {activeTab === "Applications" && (
                     <div className="applications-view">
-                        <div className="filters-bar">
-                            <div className="filter-group">
-                                <span className="filter-label">Filters ▼</span>
-                            </div>
-
+                        <FilterBar
+                            rightActions={<button className="add-btn-circle">+</button>}
+                        >
                             <FilterDropdown
                                 label="Pests"
                                 options={pestOptions}
@@ -552,9 +651,7 @@ const GreenhouseApplications = () => {
                                 selected={filters.beneficials}
                                 onChange={(val) => handleFilterChange('beneficials', val)}
                             />
-
-                            <button className="add-btn-circle">+</button>
-                        </div>
+                        </FilterBar>
 
                         <div className="applications-table-container">
                             <table className="applications-table">

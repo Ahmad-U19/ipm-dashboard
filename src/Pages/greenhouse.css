@@ -296,9 +296,61 @@
 }
 
 @media (max-width: 768px) {
+  .greenhouse-header {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .header-left {
+    flex-direction: column;
+    width: 100%;
+    gap: 16px;
+  }
+
+  .header-stats {
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-left: 0;
+  }
+
+  .stat-label {
+    margin-left: 0;
+  }
+
+  .header-actions {
+    width: 100%;
+    justify-content: flex-start;
+    margin: 10px 0;
+    overflow-x: auto;
+    padding-bottom: 5px;
+  }
+
   .greenhouse-controls {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .greenhouse-tabs-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .greenhouse-tabs {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 5px;
+    gap: 16px;
+  }
+
+  .greenhouse-tab {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .week-selector {
+    width: 100%;
+    justify-content: space-between;
   }
 
   .tabs {
@@ -341,13 +393,29 @@
   .greenhouse-grid {
     grid-template-columns: 1fr;
   }
+
+  /* Map View Responsive */
+  .map-view-container {
+    flex-direction: column;
+  }
+
+  .map-controls {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #e5e7eb;
+    padding-right: 0;
+    padding-bottom: 20px;
+  }
+
+  .rows-container {
+    grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
+  }
 }
 
 @media (max-width: 480px) {
   .greenhouse-header {
-    flex-direction: row;
-    /* Keep horizontal but stack content inside if needed */
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .header-title-section h2 {
@@ -358,6 +426,20 @@
     width: 42px;
     height: 42px;
     font-size: 24px;
+  }
+
+  .filters-bar {
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .filter-group {
+    min-width: auto;
+  }
+
+  .week-display {
+    font-size: 12px;
+    padding: 4px 8px;
   }
 }
 
@@ -590,18 +672,18 @@
 }
 
 .text-btn {
- background: none;
-    border: none;
-    color: #2dc55f;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    /* display: flex; */
-    align-items: center;
-    /* gap: 6px; */
-    padding: 6px 12px;
-    border-radius: 6px;
-    transition: background 0.2s;
+  background: none;
+  border: none;
+  color: #2dc55f;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  /* display: flex; */
+  align-items: center;
+  /* gap: 6px; */
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: background 0.2s;
 }
 
 .text-btn:hover {
@@ -747,6 +829,8 @@
 .applications-table-container {
   min-height: 400px;
   background: #f3f4f6;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   /* Light gray background for table area as seen in screenshot */
 }
 
@@ -1113,6 +1197,8 @@
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  overflow-x: auto;
+  /* Ensure tables scroll */
 }
 
 .search-bar-row {
@@ -1122,6 +1208,8 @@
   padding: 12px 20px;
   background: #f9fafb;
   border-bottom: 1px solid #e5e7eb;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .note-info {
