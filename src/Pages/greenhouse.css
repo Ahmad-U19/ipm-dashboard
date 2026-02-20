@@ -1268,3 +1268,124 @@
   font-size: 13px;
   background: #f9fafb;
 }
+
+/* Assignments Modal Specific Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+}
+
+.modal-content.large {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 650px;
+  /* Wider for assignments */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  animation: modalSlideIn 0.3s ease-out;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 20px;
+}
+
+.modal-header-row h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #374151;
+}
+
+.timestamp {
+  font-size: 12px;
+  color: #9ca3af;
+  font-weight: 400;
+}
+
+.assignment-section-title {
+  color: #2dc55f;
+  font-size: 14px;
+  font-weight: 700;
+  margin-top: 25px;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.user-assignment-block {
+  margin-bottom: 20px;
+}
+
+.user-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+
+.user-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #374151;
+}
+
+.assignment-textarea {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 12px;
+  font-size: 14px;
+  color: #374151;
+  resize: vertical;
+  min-height: 80px;
+  font-family: inherit;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+  background-color: #fff;
+}
+
+.assignment-textarea:focus {
+  outline: none;
+  border-color: #2dc55f;
+  box-shadow: 0 0 0 3px rgba(45, 197, 95, 0.1);
+}
+
+.save-btn-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 30px;
+}
+
+.save-btn {
+  background-color: #2dc55f;
+  color: white;
+  border: none;
+  padding: 10px 30px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.2s;
+}
+
+.save-btn:hover {
+  background-color: #26b054;
+}

@@ -9,7 +9,6 @@ import { SAMPLE_SPRAYS } from "./SprayLibrary";
 import greenhousePIC from "../Data/greenhouse.png";
 import "./greenhouse.css";
 
-// Sample Data for Applications
 const SAMPLE_APPLICATIONS = [
     {
         id: 1,
@@ -433,12 +432,87 @@ const OtherObservationsView = () => {
 
 // --- Main Component ---
 
+const AssignmentsModal = ({ isOpen, onClose }) => {
+    if (!isOpen) return null;
+
+    return (
+        <div className="modal-overlay" onClick={onClose}>
+            <div className="modal-content large" onClick={e => e.stopPropagation()}>
+                <div className="modal-header-row">
+                    <h3>Message to ALL Users</h3>
+                    <span className="timestamp">6 days ago at 9:06 PM by Rashid Idrees</span>
+                </div>
+
+                <textarea className="assignment-textarea" placeholder=""></textarea>
+
+                <div className="assignment-section-title">Full Access</div>
+
+                <div className="user-assignment-block">
+                    <div className="user-header">
+                        <span className="user-name">Fouad Charafeddine</span>
+                    </div>
+                    <textarea className="assignment-textarea"></textarea>
+                </div>
+
+                <div className="user-assignment-block">
+                    <div className="user-header">
+                        <span className="user-name">Muhammad Javed</span>
+                    </div>
+                    <textarea className="assignment-textarea"></textarea>
+                </div>
+
+                <div className="assignment-section-title">Owners</div>
+
+                <div className="user-assignment-block">
+                    <div className="user-header">
+                        <span className="user-name">Rashid Idrees</span>
+                        <span className="timestamp">6 days ago at 9:06 PM by Rashid Idrees</span>
+                    </div>
+                    <textarea
+                        className="assignment-textarea"
+                        defaultValue="Please check row 2 zone 2 house 1"
+                    ></textarea>
+                </div>
+
+                <div className="user-assignment-block">
+                    <div className="user-header">
+                        <span className="user-name">Jamie D'alimonte</span>
+                    </div>
+                    <textarea className="assignment-textarea"></textarea>
+                </div>
+
+                <div className="save-btn-container">
+                    <button className="save-btn" onClick={onClose}>SAVE</button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+
 const GreenhouseApplications = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState("Overview"); // Default to Overview (first tab)
     const [currentWeek] = useState(32);
     const [year] = useState(2025);
+    const [isAssignmentsOpen, setIsAssignmentsOpen] = useState(false);
+    const [activeDropdown, setActiveDropdown] = useState(null);
+
+    // Close dropdowns when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (!event.target.closest('.header-actions')) {
+                setActiveDropdown(null);
+            }
+        };
+        document.addEventListener('click', handleClickOutside);
+        return () => document.removeEventListener('click', handleClickOutside);
+    }, []);
+
+    const toggleDropdown = (name) => {
+        setActiveDropdown(activeDropdown === name ? null : name);
+    };
 
     const greenhouse = SAMPLE_GREENHOUSES.find((g) => g.id === parseInt(id));
 
@@ -570,15 +644,36 @@ const GreenhouseApplications = () => {
                     </div>
                 </div>
                 <div className="header-actions">
-                    <button className="text-btn">
-                        <span className="icon">🏁</span> Applications ▼
-                    </button>
-                    <button className="text-btn">
+                    <div className="action-wrapper" style={{ position: 'relative' }}>
+                        <button className="text-btn" onClick={() => toggleDropdown('applications')}>
+                            <span className="icon">🏁</span> Applications ▼
+                        </button>
+                        {activeDropdown === 'applications' && (
+                            <div className="dropdown-menu" style={{ display: 'block', width: '180px', top: '100%', right: 'auto', left: '0' }}>
+                                <div className="dropdown-item" onClick={() => console.log("Add spray")}>Add spray</div>
+                                <div className="dropdown-item" onClick={() => console.log("Add beneficial")}>Add benificial</div>
+                                <div className="dropdown-item" onClick={() => console.log("Add other")}>Add other</div>
+                            </div>
+                        )}
+                    </div>
+
+                    <button className="text-btn" onClick={() => setIsAssignmentsOpen(true)}>
                         <span className="icon">📋</span> Assignments
                     </button>
-                    <button className="text-btn">
-                        <span className="icon">⚙️</span> Settings ▼
-                    </button>
+
+                    <div className="action-wrapper" style={{ position: 'relative' }}>
+                        <button className="text-btn" onClick={() => toggleDropdown('settings')}>
+                            <span className="icon">⚙️</span> Settings ▼
+                        </button>
+                        {activeDropdown === 'settings' && (
+                            <div className="dropdown-menu" style={{ display: 'block', width: '220px', top: '100%', right: '0' }}>
+                                <div className="dropdown-item" onClick={() => console.log("Add/ remove plants")}>Add/ remove plants</div>
+                                <div className="dropdown-item" onClick={() => console.log("Add/ remove sticky cards")}>Add/ remove sticky cards</div>
+                                <div className="dropdown-item" onClick={() => console.log("Add/remove Thresholds")}>Add/remove Thresholds</div>
+                                <div className="dropdown-item" onClick={() => console.log("View Settings")}>View Settings</div>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
 
@@ -705,6 +800,12 @@ const GreenhouseApplications = () => {
                 )}
                 {activeTab === "Other Observations" && <OtherObservationsView />}
             </div>
+
+            {/* Assignments Modal */}
+            <AssignmentsModal
+                isOpen={isAssignmentsOpen}
+                onClose={() => setIsAssignmentsOpen(false)}
+            />
         </div>
     );
 };

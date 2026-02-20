@@ -1,0 +1,150 @@
+.advanced-report-container {
+    padding: 20px;
+    background-color: #f9fafb;
+    min-height: 100vh;
+}
+
+/* Toggle Switch */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked+.slider {
+    background-color: #ef4444;
+    /* Red for OFF state in screenshot seems to be default, wait, screenshot shows OFF as red? No, OFF is typically grey/red, ON is green. Let's look at screenshot again. */
+    /* Screenshot: "Off <toggle> On". Toggle is red when Off? Or is it just a red label? Actually content looks like: "Off (red text) <toggle red> On (grey text)". Wait.
+       Let's look at the toggle again. It shows: "Off [switch] On". The switch is red. The knob is on the left.
+       Usually: Left = Off, Right = On.
+       If it's Red when Off, maybe it indicates "Comparison Mode Off".
+    */
+    background-color: #2dc55f;
+}
+
+input:checked+.slider:before {
+    transform: translateX(20px);
+}
+
+/* Red slider for unchecked state if needed, but let's stick to standard for now or match screenshot specifically */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* Specific overrides for Advanced Report Grid */
+.advanced-filters-grid {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    gap: 20px;
+    align-items: flex-end;
+    margin-bottom: 20px;
+}
+
+.week-range-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.week-input {
+    width: 100px;
+    padding: 8px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+}
+
+.year-input {
+    width: 80px;
+    padding: 8px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+}
+
+.search-input-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+}
+
+.search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+}
+
+.search-input {
+    width: 100%;
+    padding: 8px 10px 8px 35px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+}
+
+.display-options {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.checkbox-label-sm {
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Toggle specific style from screenshot */
+.toggle-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.toggle-label {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.toggle-label.active {
+    color: #111827;
+}
+
+.toggle-label.inactive {
+    color: #9ca3af;
+}
