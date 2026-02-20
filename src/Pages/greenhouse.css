@@ -2,11 +2,20 @@
   padding: 20px;
   background: #f9fafb;
   min-height: calc(100vh - 40px);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .greenhouse-header {
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #f9fafb;
+  padding: 10px 0;
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 20px;
 }
 
 .greenhouse-header-1 {
@@ -321,8 +330,8 @@
     width: 100%;
     justify-content: flex-start;
     margin: 10px 0;
-    overflow-x: auto;
-    padding-bottom: 5px;
+    flex-wrap: wrap;
+    gap: 8px;
   }
 
   .greenhouse-controls {
@@ -692,6 +701,36 @@
 
 .text-btn .icon {
   font-size: 16px;
+}
+
+.mobile-actions-btn {
+  display: none;
+  background: none;
+  border: 1px solid #2dc55f;
+  color: #2dc55f;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .header-actions.desktop-only {
+    display: none;
+  }
+
+  .mobile-actions-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 20px 0;
+  }
+
+  .greenhouse-header {
+    top: 60px;
+    padding-bottom: 5px;
+  }
 }
 
 /* Tabs & Week Selector */
@@ -1388,4 +1427,98 @@
 
 .save-btn:hover {
   background-color: #26b054;
+}
+
+/* Add Application Modal */
+.add-app-modal {
+  max-width: 450px !important;
+  padding: 0 !important;
+}
+
+.add-app-modal .modal-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.add-app-modal .modal-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #374151;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #374151;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.form-select,
+.form-textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.date-input-wrapper input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.cost-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.currency-symbol {
+  position: absolute;
+  left: 12px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.cost-input-wrapper input {
+  padding-left: 24px !important;
+}
+
+.modal-footer {
+  padding: 0 20px 20px 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.save-btn-green {
+  background-color: #78d38b;
+  color: white;
+  border: none;
+  padding: 10px 30px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.save-btn-green:hover {
+  background-color: #68c37b;
 }

@@ -490,6 +490,64 @@ const AssignmentsModal = ({ isOpen, onClose }) => {
 };
 
 
+const AddApplicationModal = ({ isOpen, onClose }) => {
+    if (!isOpen) return null;
+
+    return (
+        <div className="modal-overlay" onClick={onClose}>
+            <div className="modal-content add-app-modal" onClick={e => e.stopPropagation()}>
+                <div className="modal-header">
+                    <button className="back-btn" onClick={onClose}>
+                        <span className="arrow-left">‹</span>
+                    </button>
+                    <h3>Add Application</h3>
+                </div>
+
+                <div className="modal-body">
+                    <div className="form-group">
+                        <label>Date: <span className="required">*</span></label>
+                        <div className="date-input-wrapper">
+                            <input type="date" defaultValue="2025-07-30" />
+                        </div>
+                    </div>
+
+                    <div className="form-group">
+                        <label>Time: <span className="required">*</span></label>
+                        <select className="form-select">
+                            <option>12:00pm (12:00)</option>
+                            <option>01:00pm (13:00)</option>
+                            <option>02:00pm (14:00)</option>
+                        </select>
+                    </div>
+
+                    <div className="form-group">
+                        <label>Title: <span className="required">*</span></label>
+                        <input type="text" placeholder="" />
+                    </div>
+
+                    <div className="form-group">
+                        <label>Cost</label>
+                        <div className="cost-input-wrapper">
+                            <span className="currency-symbol">$</span>
+                            <input type="text" placeholder="" />
+                        </div>
+                    </div>
+
+                    <div className="form-group">
+                        <label>Notes:</label>
+                        <textarea className="form-textarea" placeholder=""></textarea>
+                    </div>
+                </div>
+
+                <div className="modal-footer">
+                    <button className="save-btn-green" onClick={onClose}>SAVE</button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+
 const GreenhouseApplications = () => {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -497,12 +555,13 @@ const GreenhouseApplications = () => {
     const [currentWeek] = useState(32);
     const [year] = useState(2025);
     const [isAssignmentsOpen, setIsAssignmentsOpen] = useState(false);
+    const [isAddOtherOpen, setIsAddOtherOpen] = useState(false);
     const [activeDropdown, setActiveDropdown] = useState(null);
 
     // Close dropdowns when clicking outside
     useEffect(() => {
         const handleClickOutside = (event) => {
-            if (!event.target.closest('.header-actions')) {
+            if (!event.target.closest('.header-actions') && !event.target.closest('.mobile-actions-btn')) {
                 setActiveDropdown(null);
             }
         };
@@ -643,16 +702,48 @@ const GreenhouseApplications = () => {
                         </div>
                     </div>
                 </div>
-                <div className="header-actions">
+                <button className="mobile-actions-btn" onClick={() => toggleDropdown('mobile-more')}>
+                    <span className="icon">☰</span> Actions ▼
+                </button>
+
+                {activeDropdown === 'mobile-more' && (
+                    <div className="dropdown-menu" style={{
+                        display: 'block',
+                        width: '200px',
+                        top: '40px',
+                        right: '0',
+                        zIndex: 1001
+                    }}>
+                        <div className="dropdown-item" style={{ fontWeight: 'bold', color: '#2dc55f' }}>Applications</div>
+                        <div className="dropdown-item" onClick={() => navigate(`/greenhouses/${id}/add-spray`)} style={{ paddingLeft: '20px' }}>• Add spray</div>
+                        <div className="dropdown-item" onClick={() => navigate(`/greenhouses/${id}/add-beneficial`)} style={{ paddingLeft: '20px' }}>• Add beneficial</div>
+                        <div className="dropdown-item" onClick={() => { setIsAddOtherOpen(true); setActiveDropdown(null); }} style={{ paddingLeft: '20px' }}>• Add other</div>
+
+                        <div className="dropdown-item" onClick={() => { setIsAssignmentsOpen(true); setActiveDropdown(null); }} style={{ fontWeight: 'bold' }}>📋 Assignments</div>
+
+                        <div className="dropdown-item" style={{ fontWeight: 'bold', color: '#2dc55f' }}>Settings</div>
+                        <div className="dropdown-item" onClick={() => navigate(`/greenhouses/${id}/settings/plants`)} style={{ paddingLeft: '20px' }}>• Add/remove plants</div>
+                        <div className="dropdown-item" onClick={() => navigate(`/greenhouses/${id}/settings/sticky-cards`)} style={{ paddingLeft: '20px' }}>• Add/remove sticky cards</div>
+                        <div className="dropdown-item" onClick={() => navigate(`/greenhouses/${id}/settings/thresholds`)} style={{ paddingLeft: '20px' }}>• Add/remove Thresholds</div>
+                        <div className="dropdown-item" onClick={() => navigate(`/greenhouses/${id}/settings`)} style={{ paddingLeft: '20px' }}>• View Settings</div>
+                    </div>
+                )}
+
+                <div className="header-actions desktop-only">
                     <div className="action-wrapper" style={{ position: 'relative' }}>
                         <button className="text-btn" onClick={() => toggleDropdown('applications')}>
                             <span className="icon">🏁</span> Applications ▼
                         </button>
                         {activeDropdown === 'applications' && (
-                            <div className="dropdown-menu" style={{ display: 'block', width: '180px', top: '100%', right: 'auto', left: '0' }}>
-                                <div className="dropdown-item" onClick={() => console.log("Add spray")}>Add spray</div>
-                                <div className="dropdown-item" onClick={() => console.log("Add beneficial")}>Add benificial</div>
-                                <div className="dropdown-item" onClick={() => console.log("Add other")}>Add other</div>
+                            <div className="dropdown-menu" style={{
+                                display: 'block',
+                                width: '180px',
+                                top: '100%',
+                                left: '0'
+                            }}>
+                                <div className="dropdown-item" onClick={() => navigate(`/greenhouses/${id}/add-spray`)}>Add spray</div>
+                                <div className="dropdown-item" onClick={() => navigate(`/greenhouses/${id}/add-beneficial`)}>Add benificial</div>
+                                <div className="dropdown-item" onClick={() => setIsAddOtherOpen(true)}>Add other</div>
                             </div>
                         )}
                     </div>
@@ -666,11 +757,16 @@ const GreenhouseApplications = () => {
                             <span className="icon">⚙️</span> Settings ▼
                         </button>
                         {activeDropdown === 'settings' && (
-                            <div className="dropdown-menu" style={{ display: 'block', width: '220px', top: '100%', right: '0' }}>
-                                <div className="dropdown-item" onClick={() => console.log("Add/ remove plants")}>Add/ remove plants</div>
-                                <div className="dropdown-item" onClick={() => console.log("Add/ remove sticky cards")}>Add/ remove sticky cards</div>
-                                <div className="dropdown-item" onClick={() => console.log("Add/remove Thresholds")}>Add/remove Thresholds</div>
-                                <div className="dropdown-item" onClick={() => console.log("View Settings")}>View Settings</div>
+                            <div className="dropdown-menu" style={{
+                                display: 'block',
+                                width: '220px',
+                                top: '100%',
+                                right: '0'
+                            }}>
+                                <div className="dropdown-item" onClick={() => navigate(`/greenhouses/${id}/settings/plants`)}>Add/ remove plants</div>
+                                <div className="dropdown-item" onClick={() => navigate(`/greenhouses/${id}/settings/sticky-cards`)}>Add/ remove sticky cards</div>
+                                <div className="dropdown-item" onClick={() => navigate(`/greenhouses/${id}/settings/thresholds`)}>Add/remove Thresholds</div>
+                                <div className="dropdown-item" onClick={() => navigate(`/greenhouses/${id}/settings`)}>View Settings</div>
                             </div>
                         )}
                     </div>
@@ -805,6 +901,11 @@ const GreenhouseApplications = () => {
             <AssignmentsModal
                 isOpen={isAssignmentsOpen}
                 onClose={() => setIsAssignmentsOpen(false)}
+            />
+
+            <AddApplicationModal
+                isOpen={isAddOtherOpen}
+                onClose={() => setIsAddOtherOpen(false)}
             />
         </div>
     );

@@ -7,7 +7,6 @@
 .report-header {
   display: flex;
   align-items: flex-start;
-  justify-content: space-between;
   margin-bottom: 16px;
 }
 
@@ -71,13 +70,13 @@
 
 .week-nav-btn {
   background: #f3f4f6;
-    margin: 0;
-    border: 1px solid #d1d5db;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 16px;
-    color: #374151;
-    transition: all 0.2s ease;
+  margin: 0;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  color: #374151;
+  transition: all 0.2s ease;
 }
 
 .week-nav-btn:hover {
