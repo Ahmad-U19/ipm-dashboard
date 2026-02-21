@@ -215,18 +215,69 @@ const OverviewView = ({ greenhouse }) => {
     );
 };
 
-const MapView = () => {
-    // Generate some dummy rows
-    const rows = Array.from({ length: 20 }, (_, i) => i + 1);
-    const [filters, setFilters] = useState({
+const MapView = ({ applications, filters, totalRows }) => {
+    // Generate zones based on totalRows, each with 5 rows
+    const zones = useMemo(() => {
+        const rowsPerZone = 5;
+        const numZones = Math.ceil((totalRows || 75) / rowsPerZone);
+        const generatedZones = [];
+
+        for (let i = numZones; i >= 1; i--) {
+            const zStartRow = (i - 1) * rowsPerZone + 1;
+            const rowsInThisZone = Math.min(rowsPerZone, (totalRows || 75) - zStartRow + 1);
+
+            if (rowsInThisZone <= 0) continue;
+
+            const rows = [];
+            for (let j = 0; j < rowsInThisZone; j++) {
+                rows.push({
+                    number: zStartRow + j,
+                    isGreen: true
+                });
+            }
+
+            generatedZones.push({
+                id: i,
+                rows: [...rows].reverse() // Higher numbers at top of zone
+            });
+        }
+        return generatedZones;
+    }, [totalRows]);
+
+    const [mapFilters, setMapFilters] = useState({
         pressure: []
     });
 
     const pressureOptions = ["Low", "Medium", "High"];
 
     const handleFilterChange = (category, val) => {
-        setFilters(prev => ({ ...prev, [category]: val }));
+        setMapFilters(prev => ({ ...prev, [category]: val }));
     };
+
+    const ColumnMarkers = () => (
+        <div className="map-column-markers">
+            <span className="col-num">1</span>
+            <span className="col-arrow">→</span>
+            <span className="col-num">20</span>
+        </div>
+    );
+
+    // Filter applications based on map filters and location data
+    const visibleMarkers = useMemo(() => {
+        return applications.filter(app => {
+            // Must have location data
+            if (!app.row || !app.col) return false;
+
+            // Check if matches the global filters (passed from parent)
+            const matchPest = filters.pests.length === 0 || app.pests.some(p => filters.pests.includes(p));
+            const matchDisease = filters.diseases.length === 0 || app.diseases.some(d => filters.diseases.includes(d));
+            const matchPlant = filters.plants.length === 0 || app.plants.some(p => filters.plants.includes(p));
+            const matchSpray = filters.sprays.length === 0 || app.sprays.some(s => filters.sprays.includes(s));
+            const matchBeneficial = filters.beneficials.length === 0 || app.beneficials.some(b => filters.beneficials.includes(b));
+
+            return matchPest && matchDisease && matchPlant && matchSpray && matchBeneficial;
+        });
+    }, [applications, filters]);
 
     return (
         <div className="map-view-container">
@@ -244,23 +295,49 @@ const MapView = () => {
                         <FilterDropdown
                             label="Pressure"
                             options={pressureOptions}
-                            selected={filters.pressure}
+                            selected={mapFilters.pressure}
                             onChange={(val) => handleFilterChange('pressure', val)}
                         />
                     </FilterBar>
                 </div>
             </div>
 
-            <div className="greenhouse-map-visual">
-                <div className="compass">
-                    <span>N</span>
-                    <div className="arrow-up"></div>
-                </div>
-                <div className="rows-container">
-                    {rows.map(row => (
-                        <div key={row} className="map-row">
-                            <span className="row-number">{row}</span>
-                            <div className="row-visual"></div>
+            <div className="greenhouse-map-canvas">
+                <div className="map-scroll-area">
+                    {zones.map((zone, zoneIdx) => (
+                        <div key={zone.id} className="map-zone-section">
+                            <ColumnMarkers />
+
+                            <div className="zone-rows-container">
+                                <div className="rows-list">
+                                    {zone.rows.map((row) => (
+                                        <div key={row.number} className="map-row-horizontal">
+                                            <div className="row-label-left">{row.number}</div>
+                                            <div className={`row-bar ${row.isGreen ? 'green-bar' : 'empty-bar'}`}>
+                                                {visibleMarkers
+                                                    .filter(m => m.row === row.number)
+                                                    .map(marker => (
+                                                        <div
+                                                            key={marker.id}
+                                                            className="map-marker"
+                                                            style={{ left: `${(marker.col / 20) * 100}%` }}
+                                                            title={marker.name}
+                                                        >
+                                                            <div className="marker-icon">👣</div>
+                                                            <div className="marker-id">{marker.id}</div>
+                                                        </div>
+                                                    ))}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className="zone-side-label">
+                                    <span>{zone.id}</span>
+                                </div>
+                            </div>
+
+                            <ColumnMarkers />
+                            {zoneIdx < zones.length - 1 && <div className="zone-divider"></div>}
                         </div>
                     ))}
                 </div>
@@ -490,8 +567,40 @@ const AssignmentsModal = ({ isOpen, onClose }) => {
 };
 
 
-const AddApplicationModal = ({ isOpen, onClose }) => {
+const AddApplicationModal = ({ isOpen, onClose, onSave, totalRows }) => {
+    const [formData, setFormData] = useState({
+        date: "2025-07-30",
+        time: "12:00pm (12:00)",
+        title: "",
+        cost: "",
+        notes: "",
+        row: "1",
+        col: "10"
+    });
+
     if (!isOpen) return null;
+
+    const handleSave = () => {
+        if (!formData.title) {
+            alert("Please enter a title");
+            return;
+        }
+        onSave({
+            ...formData,
+            id: Date.now(),
+            name: formData.title,
+            pests: ["Aphids"], // Default sample data
+            diseases: [],
+            plants: ["Tomato"],
+            sprays: ["Actara"],
+            beneficials: [],
+            rate: "10 ml/L",
+            cost: `$${formData.cost || "0"}`,
+            row: parseInt(formData.row),
+            col: parseInt(formData.col)
+        });
+        onClose();
+    };
 
     return (
         <div className="modal-overlay" onClick={onClose}>
@@ -504,43 +613,53 @@ const AddApplicationModal = ({ isOpen, onClose }) => {
                 </div>
 
                 <div className="modal-body">
-                    <div className="form-group">
-                        <label>Date: <span className="required">*</span></label>
-                        <div className="date-input-wrapper">
-                            <input type="date" defaultValue="2025-07-30" />
+                    <div className="form-group-row">
+                        <div className="form-group">
+                            <label>Date: <span className="required">*</span></label>
+                            <input type="date" value={formData.date} onChange={e => setFormData({ ...formData, date: e.target.value })} />
+                        </div>
+                        <div className="form-group">
+                            <label>Time: <span className="required">*</span></label>
+                            <select className="form-select" value={formData.time} onChange={e => setFormData({ ...formData, time: e.target.value })}>
+                                <option>12:00pm (12:00)</option>
+                                <option>01:00pm (13:00)</option>
+                                <option>02:00pm (14:00)</option>
+                            </select>
                         </div>
                     </div>
 
                     <div className="form-group">
-                        <label>Time: <span className="required">*</span></label>
-                        <select className="form-select">
-                            <option>12:00pm (12:00)</option>
-                            <option>01:00pm (13:00)</option>
-                            <option>02:00pm (14:00)</option>
-                        </select>
+                        <label>Title: <span className="required">*</span></label>
+                        <input type="text" placeholder="e.g. Pest Control" value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} />
                     </div>
 
-                    <div className="form-group">
-                        <label>Title: <span className="required">*</span></label>
-                        <input type="text" placeholder="" />
+                    <div className="form-group-row" style={{ display: 'flex', gap: '15px' }}>
+                        <div className="form-group" style={{ flex: 1 }}>
+                            <label>Row (1-{totalRows || 75}):</label>
+                            <input type="number" min="1" max={totalRows || 75} value={formData.row} onChange={e => setFormData({ ...formData, row: e.target.value })} />
+                        </div>
+                        <div className="form-group" style={{ flex: 1 }}>
+                            <label>Column (1-20):</label>
+                            <input type="number" min="1" max="20" value={formData.col} onChange={e => setFormData({ ...formData, col: e.target.value })} />
+                        </div>
                     </div>
 
                     <div className="form-group">
                         <label>Cost</label>
                         <div className="cost-input-wrapper">
                             <span className="currency-symbol">$</span>
-                            <input type="text" placeholder="" />
+                            <input type="text" value={formData.cost} onChange={e => setFormData({ ...formData, cost: e.target.value })} />
                         </div>
                     </div>
 
                     <div className="form-group">
                         <label>Notes:</label>
-                        <textarea className="form-textarea" placeholder=""></textarea>
+                        <textarea className="form-textarea" value={formData.notes} onChange={e => setFormData({ ...formData, notes: e.target.value })}></textarea>
                     </div>
                 </div>
 
                 <div className="modal-footer">
-                    <button className="save-btn-green" onClick={onClose}>SAVE</button>
+                    <button className="save-btn-green" onClick={handleSave}>SAVE</button>
                 </div>
             </div>
         </div>
@@ -557,6 +676,20 @@ const GreenhouseApplications = () => {
     const [isAssignmentsOpen, setIsAssignmentsOpen] = useState(false);
     const [isAddOtherOpen, setIsAddOtherOpen] = useState(false);
     const [activeDropdown, setActiveDropdown] = useState(null);
+
+    // Applications State
+    const [applications, setApplications] = useState(() => {
+        // Add some row/col to initial data for demo
+        return SAMPLE_APPLICATIONS.map((app, idx) => ({
+            ...app,
+            row: 90 + idx, // Just random spread
+            col: 5 + (idx * 3)
+        }));
+    });
+
+    const handleAddApplication = (newApp) => {
+        setApplications([newApp, ...applications]);
+    };
 
     // Close dropdowns when clicking outside
     useEffect(() => {
@@ -608,7 +741,7 @@ const GreenhouseApplications = () => {
     const otherOptions = ["Sticky Cards", "Traps"];
 
     const filteredApplications = useMemo(() => {
-        return SAMPLE_APPLICATIONS.filter(app => {
+        return applications.filter(app => {
             const matchPest = filters.pests.length === 0 || app.pests.some(p => filters.pests.includes(p));
             const matchDisease = filters.diseases.length === 0 || app.diseases.some(d => filters.diseases.includes(d));
             const matchPlant = filters.plants.length === 0 || app.plants.some(p => filters.plants.includes(p));
@@ -617,7 +750,7 @@ const GreenhouseApplications = () => {
 
             return matchPest && matchDisease && matchPlant && matchSpray && matchBeneficial;
         });
-    }, [filters]);
+    }, [filters, applications]);
 
 
     const handleDownloadCSV = () => {
@@ -799,7 +932,7 @@ const GreenhouseApplications = () => {
             {/* Main Content Area */}
             <div className="greenhouse-content">
                 {activeTab === "Overview" && <OverviewView greenhouse={greenhouse} />}
-                {activeTab === "Map" && <MapView />}
+                {activeTab === "Map" && <MapView applications={applications} filters={filters} totalRows={greenhouse.totalRows} />}
                 {activeTab === "Notes" && <NotesView />}
                 {activeTab === "Applications" && (
                     <div className="applications-view">
@@ -906,6 +1039,8 @@ const GreenhouseApplications = () => {
             <AddApplicationModal
                 isOpen={isAddOtherOpen}
                 onClose={() => setIsAddOtherOpen(false)}
+                onSave={handleAddApplication}
+                totalRows={greenhouse.totalRows}
             />
         </div>
     );

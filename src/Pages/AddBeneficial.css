@@ -1,0 +1,483 @@
+/* Add Beneficial Page Styles */
+.add-beneficial-page {
+    display: flex;
+    height: calc(100vh - 60px);
+    background: #f3f4f6;
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+}
+
+.beneficial-sidebar {
+    width: 400px;
+    background: white;
+    border-right: 1px solid #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.sidebar-header {
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.gh-icon-small {
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+}
+
+.sidebar-header h2 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #374151;
+    margin: 0;
+}
+
+.sidebar-title {
+    padding: 15px 20px 5px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #2dc55f;
+    margin: 0;
+}
+
+.beneficial-form {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.beneficial-form .form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #6b7280;
+    margin-bottom: 6px;
+}
+
+.beneficial-form input[type="text"],
+.beneficial-form input[type="date"],
+.beneficial-form select,
+.beneficial-form textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #374151;
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.search-select-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-icon {
+    position: absolute;
+    left: 10px;
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+.search-select-box input {
+    padding-left: 30px !important;
+}
+
+.selected-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.plant-tag {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.tag-icon {
+    width: 24px;
+    height: 24px;
+    background: #ef4444;
+    color: white;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.tag-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #374151;
+}
+
+.beneficial-location-controls {
+    background: #f9fafb;
+    padding: 12px;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.beneficial-location-controls label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #6b7280;
+}
+
+.control-btns {
+    display: flex;
+    gap: 10px;
+}
+
+.green-btn-filled {
+    flex: 1;
+    background: #78d38b;
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.select-targets-btn-outline {
+    background: transparent;
+    color: #78d38b;
+    border: 1px solid #78d38b;
+    padding: 10px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    background: white;
+}
+
+.beneficial-stats {
+    font-size: 12px;
+    color: #4b5563;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.cost-box {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.curr {
+    position: absolute;
+    left: 10px;
+    color: #9ca3af;
+}
+
+.cost-box input {
+    padding-left: 20px !important;
+}
+
+.info-box-light {
+    display: flex;
+    gap: 10px;
+    background: #f8fafc;
+    padding: 12px;
+    border-radius: 4px;
+    border-left: 4px solid #cbd5e1;
+    margin-top: 10px;
+}
+
+.info-icon {
+    font-size: 16px;
+}
+
+.info-box-light p {
+    margin: 0;
+    font-size: 11px;
+    color: #64748b;
+    line-height: 1.4;
+}
+
+.sidebar-footer {
+    padding: 15px 20px;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.back-btn-outline {
+    flex: 1;
+    background: white;
+    color: #2dc55f;
+    border: 1px solid #2dc55f;
+    border-radius: 4px;
+    padding: 10px;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.save-btn-green {
+    flex: 1;
+    background-color: #78d38b;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.save-btn-green:hover {
+    background-color: #68c37b;
+}
+
+/* Map Content for Add Beneficial */
+.beneficial-map-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.map-top-bar {
+    padding: 12px 20px;
+    background: white;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.map-top-bar .filter-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #374151;
+}
+
+.map-filter-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #2dc55f;
+    cursor: pointer;
+}
+
+.map-filter-checkbox input {
+    accent-color: #2dc55f;
+    width: 14px;
+    height: 14px;
+}
+
+.map-container-wrapper {
+    flex: 1;
+    position: relative;
+    background: #f3f4f6;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.north-arrow-container {
+    position: absolute;
+    left: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.north-arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.arrow-head {
+    color: #2dc55f;
+    font-size: 24px;
+}
+
+.arrow-label {
+    font-size: 28px;
+    font-weight: 800;
+    color: #374151;
+}
+
+.beneficial-map-content .greenhouse-map-canvas {
+    background: white;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border-radius: 2px;
+    padding: 30px 60px;
+    overflow: auto;
+}
+
+.selected-row {
+    box-shadow: 0 0 0 2px #2dc55f !important;
+    background: rgba(45, 197, 95, 0.1) !important;
+}
+
+.map-column-markers {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    color: #9ca3af;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.col-arrow {
+    flex: 1;
+    text-align: center;
+    position: relative;
+}
+
+.col-arrow::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    right: 20px;
+    height: 1px;
+    background: #e5e7eb;
+}
+
+.map-zone-section {
+    margin-bottom: 20px;
+}
+
+.zone-rows-container {
+    display: flex;
+    gap: 15px;
+    align-items: stretch;
+}
+
+.rows-list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.map-row-horizontal {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.row-label-left {
+    width: 30px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #9ca3af;
+    text-align: right;
+}
+
+.row-bar {
+    flex: 1;
+    height: 18px;
+    border-radius: 2px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s;
+}
+
+.green-bar {
+    background: #a3d977;
+}
+
+.empty-bar {
+    background: #f3f4f6;
+}
+
+.zone-side-label {
+    width: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-left: 1px solid #e5e7eb;
+    color: #374151;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.zone-divider {
+    height: 20px;
+}
+
+/* Responsive Styles */
+@media (max-width: 1024px) {
+    .beneficial-sidebar {
+        width: 320px;
+    }
+}
+
+@media (max-width: 768px) {
+    .add-beneficial-page {
+        flex-direction: column;
+        height: auto;
+        overflow-y: auto;
+    }
+
+    .beneficial-sidebar {
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .beneficial-form {
+        max-height: 500px;
+    }
+
+    .beneficial-map-content {
+        height: 600px;
+    }
+
+    .map-top-bar {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .north-arrow-container {
+        left: 20px;
+    }
+
+    .beneficial-map-content .greenhouse-map-canvas {
+        padding: 20px;
+    }
+}

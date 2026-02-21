@@ -11,6 +11,8 @@ import Settings from "./Pages/Settings.js";
 import BusinessSettings from "./Pages/BusinessSettings.js";
 import GreenhouseSettings from "./Pages/GreenhouseSettings.js";
 import GreenhouseApplications from "./Pages/GreenhouseApplications.js";
+import AddSpray from "./Pages/AddSpray.js";
+import AddBeneficial from "./Pages/AddBeneficial.js";
 import PlaceholderPage from "./Pages/PlaceholderPage.js";
 
 export default function App() {
@@ -27,8 +29,8 @@ export default function App() {
         <Route path="/greenhouses/:id/settings/thresholds" element={<PlaceholderPage title="Add/Remove Thresholds" />} />
 
         <Route path="/greenhouses/:id/applications" element={<GreenhouseApplications />} />
-        <Route path="/greenhouses/:id/add-spray" element={<PlaceholderPage title="Add Spray" />} />
-        <Route path="/greenhouses/:id/add-beneficial" element={<PlaceholderPage title="Add Beneficial" />} />
+        <Route path="/greenhouses/:id/add-spray" element={<AddSpray />} />
+        <Route path="/greenhouses/:id/add-beneficial" element={<AddBeneficial />} />
         <Route path="/greenhouses/:id/add-other" element={<PlaceholderPage title="Add Other" />} />
 
         <Route path="/reports/*" element={<Reports />} />
