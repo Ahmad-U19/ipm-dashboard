@@ -245,7 +245,7 @@ export default function Greenhouse() {
                   ⋮
                 </button>
                 {activeMenuId === greenhouse.id && (
-                  <div className="dropdown-menu">
+                  <div className="dropdown-menu-2">
                     {greenhouse.status === "active" ? (
                       <>
                         <button

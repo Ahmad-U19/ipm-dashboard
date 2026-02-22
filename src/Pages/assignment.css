@@ -1,128 +1,172 @@
 .assignment-layout {
   display: flex;
-  height: 100vh;
-  gap: 20px;
+  min-height: calc(100vh - 40px);
+  gap: 24px;
   box-sizing: border-box;
+  padding-bottom: 20px;
 }
 
 .assig {
   display: flex;
   align-items: center;
-  padding: 20px;
-  gap: 5px;
-  flex-wrap: wrap;
-  /* Allow wrapping */
+  padding: 10px 0 20px 0;
+  gap: 12px;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 20px;
 }
 
 .assig h2 {
-  font-size: 24px;
-  color: #333333;
+  font-size: 22px;
+  color: #1a1a1a;
+  margin: 0;
+  font-weight: 600;
 }
 
 .weather-panel {
   width: 300px;
   background: #ffffff;
-  border-radius: 10px;
-  padding: 15px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   flex-shrink: 0;
-  /* Prevent shrinking on desktop */
+  height: fit-content;
+  position: sticky;
+  top: 20px;
 }
 
 .assignment-content {
   flex: 1;
-  background: #f9f9f9;
-  padding: 20px;
-  border-radius: 10px;
-  overflow-y: auto;
-  /* Enable scrolling if content overflows */
+  background: #ffffff;
+  padding: 32px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
 }
 
 .assignment-icon {
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
 }
 
 .label-assign {
-  color: #333333;
-  margin-left: 5px;
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #666;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .area {
   width: 100%;
-  height: 100px;
-  padding: 10px;
-  margin-top: 5px;
-  border-radius: 10px;
+  min-height: 120px;
+  padding: 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 15px;
+  resize: vertical;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+
+.area:focus {
+  outline: none;
+  border-color: #2bc255;
+  box-shadow: 0 0 0 3px rgba(43, 194, 85, 0.1);
 }
 
 .area-1 {
   width: 100%;
-  /* Changed from fixed 420px */
-  max-width: 420px;
-  padding: 10px;
-  margin-top: 5px;
+  max-width: 100%;
+  min-height: 80px;
+  padding: 12px;
+  margin-top: 8px;
+  border: 1px solid #e0e0e0;
   border-radius: 10px;
   box-sizing: border-box;
-  /* Ensure padding doesn't affect width */
+  font-family: inherit;
+  resize: vertical;
+}
+
+.area-1:focus {
+  outline: none;
+  border-color: #2bc255;
+  box-shadow: 0 0 0 3px rgba(43, 194, 85, 0.1);
 }
 
 .full {
-  color: green;
-  font-size: 20px;
-  margin-left: 5px;
-  font-weight: bolder;
-  margin-top: 30px;
+  display: block;
+  color: #2bc255;
+  font-size: 18px;
+  font-weight: 700;
+  margin: 40px 0 15px 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.full-access {
+  margin-bottom: 30px;
 }
 
 .full-acess1 {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 24px;
+  margin-top: 15px;
+}
+
+.person {
   display: flex;
-  gap: 50px;
-  margin-top: 10px;
-  margin-left: 5px;
-  flex-wrap: wrap;
-  /* Allow wrapping on small screens */
+  flex-direction: column;
 }
 
 .full-acess12 {
-  font-size: 18px;
-  color: #555555;
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 5px;
 }
 
 /* Responsive Styles */
+@media (max-width: 1200px) {
+  .full-acess1 {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 1024px) {
   .assignment-layout {
     flex-direction: column;
     height: auto;
-    /* Allow height to grow */
-    min-height: 100vh;
+    min-height: auto;
+    gap: 20px;
   }
 
   .weather-panel {
     width: 100%;
-    /* Full width on mobile/tablet */
-    order: -1;
-    /* Move weather to top or keep side? Let's keep top for now if stack */
+    position: static;
+    padding: 20px;
   }
 
   .assignment-content {
     width: 100%;
-  }
-
-  .full-acess1 {
-    gap: 20px;
+    padding: 20px;
   }
 }
 
 @media (max-width: 480px) {
-  .assig {
-    padding: 10px;
-    flex-direction: column;
-    align-items: flex-start;
+  .assig h2 {
+    font-size: 18px;
   }
 
-  .assig h2 {
-    margin-top: 10px;
-    font-size: 20px;
+  .assignment-content {
+    padding: 15px;
+  }
+
+  .full-acess1 {
+    gap: 16px;
   }
 }

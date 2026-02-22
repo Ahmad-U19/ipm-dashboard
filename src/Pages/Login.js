@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../DataBase/supabaseClient"; // ⬅️ important!
 import "./login.css";
@@ -59,7 +59,7 @@ export default function Login() {
   };
 
   useEffect(() => {
-   document.title = "IPM Scoutek";
+    document.title = "IPM Scoutek";
   }, []);
 
   return (
@@ -96,6 +96,11 @@ export default function Login() {
         </form>
 
         <p className="forgot">{t.forgot}</p>
+
+        <p className="forgot" style={{ marginTop: "10px" }} onClick={() => navigate("/signup")}>
+          Don't have an account? <span style={{ color: "#2cab4f", fontWeight: "bold" }}>Sign Up</span>
+        </p>
+
 
         <div className="language">
           <label>Language: </label>

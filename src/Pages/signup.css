@@ -1,0 +1,37 @@
+.signup-page {
+    min-height: 100vh;
+    position: relative;
+}
+
+.signup-box {
+    position: relative;
+    max-width: 480px;
+    margin: auto;
+    padding-top: 180px;
+    text-align: center;
+}
+
+.signup-box h2 {
+    color: white;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.login-link {
+    margin-top: 15px;
+    color: #555;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.login-link span {
+    color: #2cab4f;
+    font-weight: bold;
+}
+
+@media (max-width: 767px) {
+    .signup-box {
+        padding-top: 120px;
+        max-width: 90%;
+    }
+}

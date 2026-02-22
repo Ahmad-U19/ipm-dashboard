@@ -1,6 +1,8 @@
 import { Routes, Route } from "react-router-dom";
 import DashboardLayout from "./Pages/DashboardLayout.js";
 import Login from "./Pages/Login";
+import SignUp from "./Pages/SignUp";
+
 import Greenhouse from "./Pages/Greenhouse";
 import Support223 from "./Pages/Support.js";
 import Assignment from "./Pages/Assignment.js";
@@ -9,24 +11,30 @@ import Libraries from "./Pages/Libraries.js";
 import Reports from "./Pages/Reports.js";
 import Settings from "./Pages/Settings.js";
 import BusinessSettings from "./Pages/BusinessSettings.js";
-import GreenhouseSettings from "./Pages/GreenhouseSettings.js";
+import ViewSettings from "./Pages/ViewSettings.js";
 import GreenhouseApplications from "./Pages/GreenhouseApplications.js";
 import AddSpray from "./Pages/AddSpray.js";
 import AddBeneficial from "./Pages/AddBeneficial.js";
+import EditPlants from "./Pages/EditPlants.js";
+import EditStickyCards from "./Pages/EditStickyCards.js";
+import EditThresholds from "./Pages/EditThresholds.js";
 import PlaceholderPage from "./Pages/PlaceholderPage.js";
 
 export default function App() {
   return (
     <Routes>
       <Route path="/" element={<Login />} />
+      <Route path="/signup" element={<SignUp />} />
+
 
       <Route element={<DashboardLayout />}>
         <Route path="/dashboard" element={<Greenhouse />} />
         <Route path="/greenhouses" element={<Greenhouse />} />
-        <Route path="/greenhouses/:id/settings" element={<GreenhouseSettings />} />
-        <Route path="/greenhouses/:id/settings/plants" element={<PlaceholderPage title="Add/Remove Plants" />} />
-        <Route path="/greenhouses/:id/settings/sticky-cards" element={<PlaceholderPage title="Add/Remove Sticky Cards" />} />
-        <Route path="/greenhouses/:id/settings/thresholds" element={<PlaceholderPage title="Add/Remove Thresholds" />} />
+        <Route path="/greenhouses/:id/settings" element={<ViewSettings />} />
+        <Route path="/greenhouses/:id/settings/plants" element={<EditPlants />} />
+
+        <Route path="/greenhouses/:id/settings/sticky-cards" element={<EditStickyCards />} />
+        <Route path="/greenhouses/:id/settings/thresholds" element={<EditThresholds />} />
 
         <Route path="/greenhouses/:id/applications" element={<GreenhouseApplications />} />
         <Route path="/greenhouses/:id/add-spray" element={<AddSpray />} />

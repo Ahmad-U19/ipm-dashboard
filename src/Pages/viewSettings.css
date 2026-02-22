@@ -1,0 +1,365 @@
+.view-settings-page {
+    display: flex;
+    height: 100vh;
+    background-color: #f4f4f4;
+    margin: -20px;
+    overflow: hidden;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+.view-sidebar {
+    width: 380px;
+    background: white;
+    border-right: 1px solid #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+    z-index: 10;
+    height: 100%;
+}
+
+.sidebar-scroll {
+    flex: 1;
+    padding: 24px;
+    overflow-y: auto;
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.gh-title-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.gh-icon-small {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.gh-title-box h2 {
+    font-size: 18px;
+    margin: 0;
+    color: #333;
+    font-weight: 700;
+}
+
+.edit-icon {
+    color: #adb5bd;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.settings-section {
+    margin-bottom: 25px;
+}
+
+.section-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #adb5bd;
+    margin-bottom: 12px;
+    display: block;
+}
+
+.section-label-green {
+    font-size: 15px;
+    font-weight: 800;
+    color: #2bc255;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.plant-info-display {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.plant-icon-large {
+    font-size: 32px;
+}
+
+.plant-details h4 {
+    margin: 0;
+    font-size: 13px;
+    color: #495057;
+    font-weight: 700;
+}
+
+.plant-details p {
+    margin: 2px 0 0 0;
+    font-size: 11px;
+    color: #adb5bd;
+}
+
+.settings-link {
+    font-size: 13px;
+    color: #2bc255;
+    text-decoration: underline;
+    cursor: pointer;
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.info-box-small {
+    display: flex;
+    gap: 8px;
+    background: #f8f9fa;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+
+.info-icon {
+    font-size: 14px;
+    color: #adb5bd;
+}
+
+.info-text {
+    font-size: 11px;
+    color: #6c757d;
+    line-height: 1.4;
+}
+
+.search-field {
+    margin-bottom: 15px;
+}
+
+.search-field label {
+    font-size: 11px;
+    color: #adb5bd;
+    font-weight: 700;
+    margin-bottom: 6px;
+    display: block;
+}
+
+.search-input-container {
+    display: flex;
+    align-items: center;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 6px 12px;
+    gap: 8px;
+}
+
+.search-input-container input {
+    border: none;
+    outline: none;
+    font-size: 13px;
+    width: 100%;
+}
+
+.icon-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.grid-icon-box {
+    background: #6200ee;
+    border-radius: 4px;
+    padding: 6px 2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    gap: 4px;
+    cursor: pointer;
+}
+
+.grid-icon-box.disease {
+    background: #111;
+}
+
+.grid-icon-box.beneficial {
+    background: #795548;
+}
+
+.icon-small {
+    font-size: 18px;
+}
+
+.icon-name-tiny {
+    font-size: 8px;
+    font-weight: 700;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+}
+
+.sidebar-footer {
+    padding: 24px;
+    border-top: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.done-btn {
+    background: #2bc255;
+    border: none;
+    color: white;
+    padding: 10px 30px;
+    border-radius: 4px;
+    font-weight: 800;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/* Map Content area */
+.settings-main {
+    flex: 1;
+    background: #e5e7eb;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+}
+
+.north-arrow-fixed {
+    position: absolute;
+    top: 50%;
+    left: 60px;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #2bc255;
+}
+
+.arrow-tip {
+    font-size: 24px;
+}
+
+.arrow-n {
+    font-size: 28px;
+    font-weight: 800;
+    color: #333;
+}
+
+.map-card-canvas {
+    background: white;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    padding: 60px;
+    border-radius: 4px;
+    position: relative;
+}
+
+.map-zone-v {
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.row-item-v {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    height: 32px;
+}
+
+.row-v-num {
+    width: 40px;
+    font-size: 12px;
+    color: #adb5bd;
+    font-weight: 700;
+}
+
+.row-v-bar {
+    flex: 1;
+    height: 100%;
+    background: linear-gradient(to bottom, #93c47d 0%, #b6d7a8 50%, #93c47d 100%);
+    border: 1px solid #7cb342;
+    border-radius: 4px;
+    position: relative;
+}
+
+.plant-label-tag {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 4px 12px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 800;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #f0f0f0;
+}
+
+.plant-ico-s {
+    font-size: 14px;
+}
+
+.zone-v-label {
+    position: absolute;
+    right: -30px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    font-weight: 800;
+    color: #333;
+}
+
+.col-guide-top {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 45px;
+    font-size: 11px;
+    color: #ced4da;
+    margin-bottom: 5px;
+    border-bottom: 1px dashed #ced4da;
+}
+
+/* Responsiveness */
+@media (max-width: 1024px) {
+    .view-sidebar {
+        width: 320px;
+    }
+}
+
+@media (max-width: 768px) {
+    .view-settings-page {
+        flex-direction: column;
+        height: auto;
+        overflow: auto;
+    }
+
+    .view-sidebar {
+        width: 100%;
+        height: auto;
+        border-right: none;
+    }
+
+    .settings-main {
+        height: 600px;
+        padding: 20px;
+    }
+
+    .sidebar-footer {
+        position: sticky;
+        bottom: 0;
+        background: white;
+        z-index: 20;
+    }
+}

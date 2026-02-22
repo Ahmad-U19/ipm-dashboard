@@ -225,13 +225,6 @@
     line-height: 1.4;
 }
 
-.sidebar-footer {
-    padding: 15px 20px;
-    border-top: 1px solid #e5e7eb;
-    display: flex;
-    justify-content: space-between;
-    gap: 15px;
-}
 
 .back-btn-outline {
     flex: 1;

@@ -54,15 +54,17 @@ export default function WeatherCard() {
             style={{
                 background: "#ffffff",
                 color: "#333333",
-                padding: "15px",
-                borderRadius: "10px",
-                border: "1px solid #e0e0e0",
-                boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
-                width: "240px",
-                margin: "10px 0",
+                padding: "20px",
+                borderRadius: "16px",
+                border: "1px solid #f0f0f0",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
+                width: "100%",
+                maxWidth: "260px",
+                margin: "10px auto",
                 fontFamily: "inherit"
             }}
         >
+
             <h3 style={{ margin: "0 0 15px 0", fontSize: "1.1rem", fontWeight: "600", textAlign: "center", opacity: "0.9" }}>
                 Weather Forecast
             </h3>

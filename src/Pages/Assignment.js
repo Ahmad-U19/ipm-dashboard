@@ -23,33 +23,35 @@ export default function Assignment() {
 
             {/* Assignments Content */}
             <div className="assignment-content">
-                <label className="label-assign" htmlFor="">Message to all Users</label>
-                <textarea className="area" name="" id="" rows="3"></textarea>
-                <br /><br /><br />
+                <div className="message-section">
+                    <label className="label-assign" htmlFor="message">Message to all Users</label>
+                    <textarea className="area" name="message" id="message" placeholder="Type a message for all users..."></textarea>
+                </div>
+
                 <div className="full-access">
-                    <label className="full" htmlFor="">Full Access</label>
+                    <label className="full">Full Access</label>
                     <div className="full-acess1">
                         <div className="person">
-                            <label className="full-acess12" htmlFor="">Fouad Charafeddine</label>
-                            <textarea className="area-1" name="" rows="3" cols="100" id=""></textarea>
+                            <label className="full-acess12" htmlFor="fouad">Fouad Charafeddine</label>
+                            <textarea className="area-1" name="fouad" id="fouad" placeholder="Assign tasks..."></textarea>
                         </div>
                         <div className="person">
-                            <label className="full-acess12" htmlFor="">Muhammad Javed</label>
-                            <textarea className="area-1" name="" rows="3" cols="100" id=""></textarea>
+                            <label className="full-acess12" htmlFor="javed">Muhammad Javed</label>
+                            <textarea className="area-1" name="javed" id="javed" placeholder="Assign tasks..."></textarea>
                         </div>
                     </div>
                 </div>
-                <br /><br />                
+
                 <div className="full-access">
-                    <label className="full" htmlFor="">Owners</label>
+                    <label className="full">Owners</label>
                     <div className="full-acess1">
                         <div className="person">
-                            <label className="full-acess12" htmlFor="">Rashid Idrees</label>
-                            <textarea className="area-1" name="" rows="3" cols="100" id=""></textarea>
+                            <label className="full-acess12" htmlFor="rashid">Rashid Idrees</label>
+                            <textarea className="area-1" name="rashid" id="rashid" placeholder="Assign tasks..."></textarea>
                         </div>
                         <div className="person">
-                            <label className="full-acess12" htmlFor="">Jamie D'alimonte</label>
-                            <textarea className="area-1" name="" rows="3" cols="100" id=""></textarea>
+                            <label className="full-acess12" htmlFor="jamie">Jamie D'alimonte</label>
+                            <textarea className="area-1" name="jamie" id="jamie" placeholder="Assign tasks..."></textarea>
                         </div>
                     </div>
                 </div>
@@ -58,3 +60,4 @@ export default function Assignment() {
         </div>
     );
 }
+
