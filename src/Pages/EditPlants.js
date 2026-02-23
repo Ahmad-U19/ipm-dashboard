@@ -1,5 +1,6 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { supabase } from "../DataBase/supabaseClient";
 import { SAMPLE_GREENHOUSES } from "../Data/greenhouseData";
 import greenhousePIC from "../Data/greenhouse.png";
 import "./editPlants.css";
@@ -12,14 +13,41 @@ const PLANTS_LIBRARY = [
 export default function EditPlants() {
     const { id } = useParams();
     const navigate = useNavigate();
-    const greenhouse = SAMPLE_GREENHOUSES.find((g) => g.id === parseInt(id));
+    const [greenhouse, setGreenhouse] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const [isPoly, setIsPoly] = useState(false);
     const [selectedPlant, setSelectedPlant] = useState(PLANTS_LIBRARY[0]); // Beefsteak
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [selectionMode, setSelectionMode] = useState("Section");
 
-    const totalRows = greenhouse?.totalRows || 45;
+    useEffect(() => {
+        fetchGreenhouse();
+    }, [id]);
+
+    const fetchGreenhouse = async () => {
+        setLoading(true);
+        try {
+            const { data, error } = await supabase
+                .from("greenhouses")
+                .select("*")
+                .eq("id", id)
+                .single();
+
+            if (error) {
+                const sample = SAMPLE_GREENHOUSES.find((g) => g.id === parseInt(id));
+                setGreenhouse(sample);
+            } else {
+                setGreenhouse(data);
+            }
+        } catch (err) {
+            console.error("Error fetching greenhouse:", err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const totalRows = greenhouse?.totalRows || greenhouse?.total_rows || 45;
 
     const [searchTerm, setSearchTerm] = useState("");
 

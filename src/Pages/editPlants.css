@@ -477,13 +477,6 @@ input:checked+.slider:before {
         padding: 20px;
     }
 
-    .sidebar-footer {
-        position: sticky;
-        bottom: 0;
-        z-index: 20;
-        padding: 15px;
-    }
-
     .north-arrow-container {
         left: 20px;
     }

@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { supabase } from "../DataBase/supabaseClient";
 import { SAMPLE_GREENHOUSES } from "../Data/greenhouseData";
 import greenhousePIC from "../Data/greenhouse.png";
 import "./editThresholds.css";
@@ -24,12 +25,40 @@ const DISEASES = [
 export default function EditThresholds() {
     const { id } = useParams();
     const navigate = useNavigate();
-    const greenhouse = SAMPLE_GREENHOUSES.find((g) => g.id === parseInt(id));
+    const [greenhouse, setGreenhouse] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const [pestSearch, setPestSearch] = useState("");
     const [diseaseSearch, setDiseaseSearch] = useState("");
 
-    if (!greenhouse) return null;
+    useEffect(() => {
+        fetchGreenhouse();
+    }, [id]);
+
+    const fetchGreenhouse = async () => {
+        setLoading(true);
+        try {
+            const { data, error } = await supabase
+                .from("greenhouses")
+                .select("*")
+                .eq("id", id)
+                .single();
+
+            if (error) {
+                const sample = SAMPLE_GREENHOUSES.find((g) => g.id === parseInt(id));
+                setGreenhouse(sample);
+            } else {
+                setGreenhouse(data);
+            }
+        } catch (err) {
+            console.error("Error fetching greenhouse:", err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    if (loading) return <div className="edit-thresholds-page">Loading...</div>;
+    if (!greenhouse) return <div className="edit-thresholds-page">Greenhouse not found</div>;
 
     const handleSave = () => {
         alert("Thresholds updated successfully!");

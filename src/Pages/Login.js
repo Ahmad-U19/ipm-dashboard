@@ -42,18 +42,22 @@ export default function Login() {
     });
 
     if (error) {
-      setError(t.invalid); // show translated error
+      setError(error.message); // show technical error (e.g. Email not confirmed)
       return;
     }
 
-    setError("");
-
-    // OPTIONAL: fetch profile data here if needed
-    // const { data: profile } = await supabase
-    //   .from("profiles")
-    //   .select("*")
-    //   .eq("user_id", data.user.id)
-    //   .single();
+    // 🔥 FALLBACK: Ensure profile exists in 'profiles' table on login
+    // This solves the issue if the DB trigger failed or wasn't set up yet.
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      await supabase.from("profiles").upsert({
+        id: user.id,
+        name: user.user_metadata?.full_name || user.email,
+        email: user.email,
+        role: user.user_metadata?.role || 'Scouter',
+        last_active: new Date().toISOString()
+      }, { onConflict: 'id' });
+    }
 
     navigate("/dashboard"); // redirect after login
   };

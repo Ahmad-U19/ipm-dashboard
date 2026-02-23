@@ -44,15 +44,24 @@ export default function User() {
     const term = search.trim().toLowerCase();
     return users
       .filter((user) => {
+        // A user is "active" if they have a last_active date. 
+        // However, let's show all users in the active tab for now if they exist, 
+        // to avoid them being "hidden" after signup.
         const isActive = !!user?.last_active;
-        if (activeTab === "active" && !isActive) return false;
+
+        // If searching, search across all users regardless of tab
+        if (term) {
+          return (
+            user?.name?.toLowerCase().includes(term) ||
+            user?.email?.toLowerCase().includes(term) ||
+            user?.role?.toLowerCase().includes(term)
+          );
+        }
+
+        if (activeTab === "active" && !isActive) return true; // Show everyone in active tab for now
         if (activeTab === "inactive" && isActive) return false;
-        if (!term) return true;
-        return (
-          user?.name?.toLowerCase().includes(term) ||
-          user?.email?.toLowerCase().includes(term) ||
-          user?.role?.toLowerCase().includes(term)
-        );
+
+        return true;
       })
       .map((user) => ({
         ...user,

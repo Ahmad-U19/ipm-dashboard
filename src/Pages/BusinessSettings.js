@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { supabase } from '../DataBase/supabaseClient';
 import './settings.css';
 import suitcaseIcon from '../Data/settings.png';
 
@@ -14,6 +15,41 @@ const BusinessSettings = () => {
         temperature: 'Celcius',
         windSpeed: 'Kilometers per hour'
     });
+    const [loading, setLoading] = useState(true);
+    const [saving, setSaving] = useState(false);
+
+    useEffect(() => {
+        fetchSettings();
+    }, []);
+
+    const fetchSettings = async () => {
+        setLoading(true);
+        try {
+            const { data, error } = await supabase
+                .from('global_settings')
+                .select('key, value')
+                .in('key', [
+                    'bays', 'rows', 'posts', 'plants', 'actionThresholds',
+                    'greenhouseArea', 'coverageArea', 'temperature', 'windSpeed'
+                ]);
+
+            if (error) {
+                console.error('Error fetching business settings:', error);
+            } else if (data && data.length > 0) {
+                const newSettings = { ...formData };
+                data.forEach(item => {
+                    newSettings[item.key] = item.key === 'actionThresholds'
+                        ? (item.value === 'true' || item.value === true)
+                        : item.value;
+                });
+                setFormData(newSettings);
+            }
+        } catch (err) {
+            console.error('Fetch error:', err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -23,10 +59,29 @@ const BusinessSettings = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Business Settings submitted:', formData);
+        setSaving(true);
+        try {
+            const updates = Object.keys(formData).map(key => ({
+                key,
+                value: String(formData[key])
+            }));
+
+            const { error } = await supabase
+                .from('global_settings')
+                .upsert(updates, { onConflict: 'key' });
+
+            if (error) throw error;
+            alert('Business Settings saved successfully!');
+        } catch (err) {
+            alert('Error saving settings: ' + err.message);
+        } finally {
+            setSaving(false);
+        }
     };
+
+    if (loading) return <div className="settings-page">Loading...</div>;
 
     return (
         <div className="settings-page">
@@ -142,8 +197,8 @@ const BusinessSettings = () => {
                     </div>
 
                     <div className="form-actions">
-                        <button type="submit" className="submit-btn">
-                            <span> Save Changes </span>
+                        <button type="submit" className="submit-btn" disabled={saving}>
+                            <span> {saving ? 'Saving...' : 'Save Changes'} </span>
                         </button>
                     </div>
                 </form>

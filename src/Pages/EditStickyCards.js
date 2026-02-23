@@ -1,5 +1,6 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { supabase } from "../DataBase/supabaseClient";
 import { SAMPLE_GREENHOUSES } from "../Data/greenhouseData";
 import greenhousePIC from "../Data/greenhouse.png";
 import "./editStickyCards.css";
@@ -7,7 +8,34 @@ import "./editStickyCards.css";
 export default function EditStickyCards() {
     const { id } = useParams();
     const navigate = useNavigate();
-    const greenhouse = SAMPLE_GREENHOUSES.find((g) => g.id === parseInt(id));
+    const [greenhouse, setGreenhouse] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        fetchGreenhouse();
+    }, [id]);
+
+    const fetchGreenhouse = async () => {
+        setLoading(true);
+        try {
+            const { data, error } = await supabase
+                .from("greenhouses")
+                .select("*")
+                .eq("id", id)
+                .single();
+
+            if (error) {
+                const sample = SAMPLE_GREENHOUSES.find((g) => g.id === parseInt(id));
+                setGreenhouse(sample);
+            } else {
+                setGreenhouse(data);
+            }
+        } catch (err) {
+            console.error("Error fetching greenhouse:", err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     // Dummy data for sidebar rows as seen in screenshot
     const stickyData = [
@@ -16,7 +44,7 @@ export default function EditStickyCards() {
         { row: 96, count: 2 },
     ];
 
-    const totalRows = greenhouse?.totalRows || 45;
+    const totalRows = greenhouse?.totalRows || greenhouse?.total_rows || 45;
 
     const zones = useMemo(() => {
         const rowsPerZone = 5;

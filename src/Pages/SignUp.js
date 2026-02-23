@@ -22,29 +22,22 @@ export default function SignUp() {
         setError("");
 
         try {
-            // 1. Sign up with Supabase Auth
+            // 1. Sign up with Supabase Auth + Metadata
             const { data, error: authError } = await supabase.auth.signUp({
                 email,
                 password,
+                options: {
+                    data: {
+                        full_name: name,
+                        role: role
+                    }
+                }
             });
 
             if (authError) throw authError;
 
             if (data.user) {
-                // 2. Create profile in 'profiles' table
-                const { error: profileError } = await supabase.from("profiles").insert([
-                    {
-                        id: data.user.id,
-                        name,
-                        email,
-                        role,
-                        last_active: new Date().toISOString(),
-                    },
-                ]);
-
-                if (profileError) throw profileError;
-
-                alert("Account created successfully! Please log in.");
+                alert("Account created successfully! If you can't log in, please check your email for a confirmation link (if enabled in your Supabase settings).");
                 navigate("/");
             }
         } catch (err) {

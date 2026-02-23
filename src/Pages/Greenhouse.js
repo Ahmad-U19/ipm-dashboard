@@ -1,16 +1,19 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import greenhousePIC from "../Data/greenhouse.png";
+import { supabase } from "../DataBase/supabaseClient";
 import "./greenhouse.css";
 
 import { SAMPLE_GREENHOUSES } from "../Data/greenhouseData";
 
 export default function Greenhouse() {
   const navigate = useNavigate();
-  const [greenhouses, setGreenhouses] = useState(SAMPLE_GREENHOUSES);
+  const [greenhouses, setGreenhouses] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("active");
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState("date-newest");
+
   // Helper to get ISO week number
   const getCurrentWeek = () => {
     const date = new Date();
@@ -45,12 +48,45 @@ export default function Greenhouse() {
 
   useEffect(() => {
     document.title = "Greenhouses | IPM Scoutek";
+    // Initialize with sample data, then fetch from Supabase
+    setGreenhouses(SAMPLE_GREENHOUSES);
+    fetchGreenhouses();
 
     // Close menu when clicking outside
     const handleClickOutside = () => setActiveMenuId(null);
     document.addEventListener("click", handleClickOutside);
     return () => document.removeEventListener("click", handleClickOutside);
   }, []);
+
+  const fetchGreenhouses = async () => {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from("greenhouses")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.warn("Supabase fetch failed, sticking with samples:", error.message);
+      } else if (data && data.length > 0) {
+        // Create a map of DB data for quick lookup
+        const dbMap = new Map(data.map(gh => [gh.id, gh]));
+
+        // Merge: Use DB data if available, otherwise use sample data
+        const merged = SAMPLE_GREENHOUSES.map(sample => dbMap.get(sample.id) || sample);
+
+        // Also include any greenhouses that are in DB but NOT in samples (newly created ones)
+        const sampleIds = new Set(SAMPLE_GREENHOUSES.map(s => s.id));
+        const extraDb = data.filter(gh => !sampleIds.has(gh.id));
+
+        setGreenhouses([...merged, ...extraDb]);
+      }
+    } catch (err) {
+      console.error("Fetch exception:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Filter greenhouses based on tab and search
   const filteredGreenhouses = useMemo(() => {
@@ -106,20 +142,36 @@ export default function Greenhouse() {
     setIsAddModalOpen(false);
   };
 
-  const handleAddGreenhouse = () => {
+  const handleAddGreenhouse = async () => {
     if (!newGreenhouseData.name || !newGreenhouseData.address) return;
 
     const newGreenhouse = {
-      id: Date.now(), // Simple unique ID
       name: newGreenhouseData.name,
       address: newGreenhouseData.address,
       lastWeekScouted: 0,
       observations: 0,
       status: "active",
+      total_rows: 45, // default
     };
 
-    setGreenhouses([newGreenhouse, ...greenhouses]);
-    handleCloseAddModal();
+    try {
+      const { data, error } = await supabase
+        .from("greenhouses")
+        .insert([newGreenhouse])
+        .select();
+
+      if (error) throw error;
+
+      if (data) {
+        setGreenhouses([data[0], ...greenhouses]);
+      }
+      handleCloseAddModal();
+    } catch (err) {
+      alert("Error adding greenhouse: " + err.message);
+      // Fallback update local state if DB fails (not ideal but for dev)
+      setGreenhouses([{ ...newGreenhouse, id: Date.now() }, ...greenhouses]);
+      handleCloseAddModal();
+    }
   };
 
   const handleMenuClick = (e, greenhouseId) => {
@@ -127,39 +179,98 @@ export default function Greenhouse() {
     setActiveMenuId(activeMenuId === greenhouseId ? null : greenhouseId);
   };
 
-  const handleCloneGreenhouse = (greenhouse) => {
+  const handleCloneGreenhouse = async (greenhouse) => {
     const clonedGreenhouse = {
-      ...greenhouse,
-      id: Date.now(),
       name: `${greenhouse.name} (Clone)`,
+      address: greenhouse.address,
+      lastWeekScouted: 0,
+      observations: 0,
       status: "active",
+      total_rows: greenhouse.total_rows || 45,
     };
-    setGreenhouses([clonedGreenhouse, ...greenhouses]);
+
+    try {
+      const { data, error } = await supabase
+        .from("greenhouses")
+        .insert([clonedGreenhouse])
+        .select();
+
+      if (error) throw error;
+      if (data) {
+        setGreenhouses([data[0], ...greenhouses]);
+      }
+    } catch (err) {
+      alert("Error cloning greenhouse: " + err.message);
+    }
     setActiveMenuId(null);
   };
 
-  const handleArchiveGreenhouse = (id) => {
-    setGreenhouses(
-      greenhouses.map((gh) =>
-        gh.id === id ? { ...gh, status: "archived" } : gh
-      )
-    );
+  const handleArchiveGreenhouse = async (id) => {
+    const greenhouse = greenhouses.find(gh => gh.id === id);
+    if (!greenhouse) return;
+
+    try {
+      const updatedGreenhouse = { ...greenhouse, status: "archived" };
+      // Using upsert ensures that if it's a sample ID not in DB, it gets created.
+      // If it is in DB, it gets updated.
+      const { error } = await supabase
+        .from("greenhouses")
+        .upsert(updatedGreenhouse, { onConflict: 'id' });
+
+      if (error) throw error;
+
+      setGreenhouses(
+        greenhouses.map((gh) =>
+          gh.id === id ? { ...gh, status: "archived" } : gh
+        )
+      );
+    } catch (err) {
+      alert("Error archiving greenhouse: " + err.message);
+    }
     setActiveMenuId(null);
   };
 
-  const handleUnarchiveGreenhouse = (id) => {
-    setGreenhouses(
-      greenhouses.map((gh) =>
-        gh.id === id ? { ...gh, status: "active" } : gh
-      )
-    );
+  const handleUnarchiveGreenhouse = async (id) => {
+    const greenhouse = greenhouses.find(gh => gh.id === id);
+    if (!greenhouse) return;
+
+    try {
+      const updatedGreenhouse = { ...greenhouse, status: "active" };
+      const { error } = await supabase
+        .from("greenhouses")
+        .upsert(updatedGreenhouse, { onConflict: 'id' });
+
+      if (error) throw error;
+
+      setGreenhouses(
+        greenhouses.map((gh) =>
+          gh.id === id ? { ...gh, status: "active" } : gh
+        )
+      );
+    } catch (err) {
+      alert("Error unarchiving greenhouse: " + err.message);
+    }
     setActiveMenuId(null);
   };
 
-  const handleDeleteGreenhouse = (id) => {
-    setGreenhouses(greenhouses.filter((gh) => gh.id !== id));
+  const handleDeleteGreenhouse = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this greenhouse?")) return;
+
+    try {
+      const { error } = await supabase
+        .from("greenhouses")
+        .delete()
+        .eq("id", id);
+
+      if (error) throw error;
+
+      setGreenhouses(greenhouses.filter((gh) => gh.id !== id));
+    } catch (err) {
+      alert("Error deleting greenhouse: " + err.message);
+    }
     setActiveMenuId(null);
   };
+
 
   return (
     <div className="greenhouse-page">
