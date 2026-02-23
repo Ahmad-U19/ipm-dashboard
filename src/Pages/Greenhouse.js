@@ -14,7 +14,7 @@ export default function Greenhouse() {
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState("date-newest");
 
-  // Helper to get ISO week number
+
   const getCurrentWeek = () => {
     const date = new Date();
     date.setHours(0, 0, 0, 0);
@@ -36,23 +36,20 @@ export default function Greenhouse() {
 
   const [currentWeek] = useState(getCurrentWeek());
 
-  // Modal State
+
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [newGreenhouseData, setNewGreenhouseData] = useState({
     name: "",
     address: "",
   });
 
-  // Menu State
   const [activeMenuId, setActiveMenuId] = useState(null);
 
   useEffect(() => {
     document.title = "Greenhouses | IPM Scoutek";
-    // Initialize with sample data, then fetch from Supabase
     setGreenhouses(SAMPLE_GREENHOUSES);
     fetchGreenhouses();
 
-    // Close menu when clicking outside
     const handleClickOutside = () => setActiveMenuId(null);
     document.addEventListener("click", handleClickOutside);
     return () => document.removeEventListener("click", handleClickOutside);
@@ -67,7 +64,6 @@ export default function Greenhouse() {
         .order("created_at", { ascending: false });
 
       if (error) {
-        console.warn("Supabase fetch failed, sticking with samples:", error.message);
       } else if (data && data.length > 0) {
         // Create a map of DB data for quick lookup
         const dbMap = new Map(data.map(gh => [gh.id, gh]));
@@ -82,13 +78,12 @@ export default function Greenhouse() {
         setGreenhouses([...merged, ...extraDb]);
       }
     } catch (err) {
-      console.error("Fetch exception:", err);
     } finally {
       setLoading(false);
     }
   };
 
-  // Filter greenhouses based on tab and search
+
   const filteredGreenhouses = useMemo(() => {
     let filtered = greenhouses.filter((gh) => {
       if (activeTab === "active") {
@@ -98,7 +93,7 @@ export default function Greenhouse() {
       }
     });
 
-    // Filter by search
+
     if (search.trim()) {
       const term = search.trim().toLowerCase();
       filtered = filtered.filter(
@@ -108,7 +103,7 @@ export default function Greenhouse() {
       );
     }
 
-    // Sort greenhouses
+
     const sorted = [...filtered].sort((a, b) => {
       switch (sortBy) {
         case "date-newest":
@@ -132,7 +127,7 @@ export default function Greenhouse() {
     (gh) => gh.status === "archived"
   ).length;
 
-  // Handlers
+
   const handleOpenAddModal = () => {
     setNewGreenhouseData({ name: "", address: "" });
     setIsAddModalOpen(true);
@@ -151,7 +146,7 @@ export default function Greenhouse() {
       lastWeekScouted: 0,
       observations: 0,
       status: "active",
-      total_rows: 45, // default
+      total_rows: 45,
     };
 
     try {
@@ -168,7 +163,6 @@ export default function Greenhouse() {
       handleCloseAddModal();
     } catch (err) {
       alert("Error adding greenhouse: " + err.message);
-      // Fallback update local state if DB fails (not ideal but for dev)
       setGreenhouses([{ ...newGreenhouse, id: Date.now() }, ...greenhouses]);
       handleCloseAddModal();
     }
@@ -210,9 +204,9 @@ export default function Greenhouse() {
     if (!greenhouse) return;
 
     try {
-      const updatedGreenhouse = { ...greenhouse, status: "archived" };
-      // Using upsert ensures that if it's a sample ID not in DB, it gets created.
-      // If it is in DB, it gets updated.
+      const { area, totalRows, ...validDbFields } = greenhouse;
+      const updatedGreenhouse = { ...validDbFields, status: "archived" };
+
       const { error } = await supabase
         .from("greenhouses")
         .upsert(updatedGreenhouse, { onConflict: 'id' });
@@ -235,7 +229,8 @@ export default function Greenhouse() {
     if (!greenhouse) return;
 
     try {
-      const updatedGreenhouse = { ...greenhouse, status: "active" };
+      const { area, totalRows, ...validDbFields } = greenhouse;
+      const updatedGreenhouse = { ...validDbFields, status: "active" };
       const { error } = await supabase
         .from("greenhouses")
         .upsert(updatedGreenhouse, { onConflict: 'id' });

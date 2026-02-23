@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import librarypic from "../Data/book.png";
 import "./pestLibrary.css";
 
-// Sample pest data - replace with actual API/database call
+
 export const SAMPLE_PESTS = [
     {
         id: 1,
@@ -96,17 +96,17 @@ export default function PestLibrary() {
         document.title = "Pest Library | IPM Scoutek";
     }, []);
 
-    // Filter pests based on search and tab
+
     const filteredPests = useMemo(() => {
         let filtered = pests;
 
-        // Filter by tab
+
         if (activeTab === "your") {
-            // For now, show last 2 as "your pests" - replace with actual user filter
+
             filtered = pests.slice(-2);
         }
 
-        // Filter by search
+
         if (search.trim()) {
             const term = search.trim().toLowerCase();
             filtered = filtered.filter(
@@ -120,7 +120,7 @@ export default function PestLibrary() {
         return filtered;
     }, [pests, activeTab, search]);
 
-    // Pagination
+
     const totalPages = Math.ceil(filteredPests.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
     const paginatedPests = filteredPests.slice(
@@ -129,7 +129,7 @@ export default function PestLibrary() {
     );
 
     const allPestsCount = pests.length;
-    const yourPestsCount = pests.slice(-2).length; // Replace with actual count
+    const yourPestsCount = pests.slice(-2).length;
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
@@ -160,7 +160,7 @@ export default function PestLibrary() {
             ...prev,
             [name]: value,
         }));
-        // Clear error for this field when user starts typing
+
         if (formErrors[name]) {
             setFormErrors((prev) => ({
                 ...prev,

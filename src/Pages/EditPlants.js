@@ -41,7 +41,6 @@ export default function EditPlants() {
                 setGreenhouse(data);
             }
         } catch (err) {
-            console.error("Error fetching greenhouse:", err);
         } finally {
             setLoading(false);
         }

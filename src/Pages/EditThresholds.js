@@ -51,7 +51,6 @@ export default function EditThresholds() {
                 setGreenhouse(data);
             }
         } catch (err) {
-            console.error("Error fetching greenhouse:", err);
         } finally {
             setLoading(false);
         }

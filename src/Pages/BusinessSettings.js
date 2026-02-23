@@ -34,7 +34,6 @@ const BusinessSettings = () => {
                 ]);
 
             if (error) {
-                console.error('Error fetching business settings:', error);
             } else if (data && data.length > 0) {
                 const newSettings = { ...formData };
                 data.forEach(item => {
@@ -45,7 +44,6 @@ const BusinessSettings = () => {
                 setFormData(newSettings);
             }
         } catch (err) {
-            console.error('Fetch error:', err);
         } finally {
             setLoading(false);
         }

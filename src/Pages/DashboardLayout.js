@@ -9,7 +9,6 @@ export default function DashboardLayout() {
 
   return (
     <div className="dashboard-layout">
-      {/* Mobile Header / Toggle */}
       <div className="mobile-header">
         <img src={logo} alt="IPM Logo" className="mobile-logo-img" />
         <button
@@ -26,7 +25,6 @@ export default function DashboardLayout() {
         onClose={() => setIsMobileOpen(false)}
       />
 
-      {/* Overlay for mobile */}
       {isMobileOpen && (
         <div
           className="sidebar-overlay"

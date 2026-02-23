@@ -6,8 +6,6 @@ export default function TestsupaBase() {
   useEffect(() => {
     async function checkConnection() {
       const { data, error } = await supabase.from("profiles").select("*");
-      console.log("DATA:", data);
-      console.log("ERROR:", error);
     }
 
     checkConnection();

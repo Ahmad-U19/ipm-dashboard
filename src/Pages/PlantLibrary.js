@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import librarypic from "../Data/book.png";
 import "./plantLibrary.css";
 
-// Sample plant data - replace with actual API/database call
+
 export const SAMPLE_PLANTS = [
   {
     id: 1,
@@ -166,17 +166,17 @@ export default function PlantLibrary() {
     document.title = "Plant Library | IPM Scoutek";
   }, []);
 
-  // Filter plants based on search and tab
+
   const filteredPlants = useMemo(() => {
     let filtered = plants;
 
-    // Filter by tab
+
     if (activeTab === "your") {
-      // For now, show first 4 as "your plants" - replace with actual user filter
+
       filtered = plants.slice(0, 4);
     }
 
-    // Filter by search
+
     if (search.trim()) {
       const term = search.trim().toLowerCase();
       filtered = filtered.filter(
@@ -190,7 +190,7 @@ export default function PlantLibrary() {
     return filtered;
   }, [plants, activeTab, search]);
 
-  // Pagination
+
   const totalPages = Math.ceil(filteredPlants.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedPlants = filteredPlants.slice(
@@ -199,7 +199,7 @@ export default function PlantLibrary() {
   );
 
   const allPlantsCount = plants.length;
-  const yourPlantsCount = 4; // Replace with actual count
+  const yourPlantsCount = 4;
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -230,7 +230,7 @@ export default function PlantLibrary() {
       ...prev,
       [name]: value,
     }));
-    // Clear error for this field when user starts typing
+
     if (formErrors[name]) {
       setFormErrors((prev) => ({
         ...prev,
@@ -265,22 +265,18 @@ export default function PlantLibrary() {
       return;
     }
 
-    // Create new plant
     const newPlant = {
-      id: Date.now(), // Simple ID generation - replace with proper ID from API
+      id: Date.now(),
       icon: formData.icon.trim(),
       name: formData.name.trim(),
       abbreviation: formData.abbreviation.trim().toUpperCase(),
       category: formData.category.trim(),
     };
 
-    // Add to plants list
     setPlants((prev) => [newPlant, ...prev]);
 
-    // Reset form and close modal
     handleCloseModal();
 
-    // Reset to first page to show the new plant
     setCurrentPage(1);
   };
 

@@ -21,7 +21,6 @@ export default function Assignment() {
     const fetchAssignments = async () => {
         setLoading(true);
         try {
-            // Fetch global message
             const { data: globalData } = await supabase
                 .from('global_settings')
                 .select('key, value')
@@ -29,8 +28,6 @@ export default function Assignment() {
                 .single();
             if (globalData) setGlobalMessage(globalData.value);
 
-            // Fetch user specific assignments from a generic 'assignments' table if it exists, 
-            // or use global_settings keys for simplicity in this demo environment
             const { data: userData } = await supabase
                 .from('global_settings')
                 .select('key, value')
@@ -45,7 +42,6 @@ export default function Assignment() {
                 });
             }
         } catch (err) {
-            console.error("Error fetching assignments:", err);
         } finally {
             setLoading(false);
         }
@@ -80,7 +76,7 @@ export default function Assignment() {
     return (
         <div className="assignment-layout">
 
-            {/* Weather Section */}
+
             <div className="weather-panel">
                 <div className="assig">
                     <img className="assignment-icon" src={ASSIGNMENT} alt="Assignment" />
@@ -89,7 +85,7 @@ export default function Assignment() {
                 <WeatherCard />
             </div>
 
-            {/* Assignments Content */}
+
             <div className="assignment-content">
                 <div className="message-section">
                     <label className="label-assign" htmlFor="message">Message to all Users</label>

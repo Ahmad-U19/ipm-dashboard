@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import librarypic from "../Data/book.png";
 import "./diseaseLibrary.css";
 
-// Sample disease data - based on the image provided
+
 export const SAMPLE_DISEASES = [
     {
         id: 1,
@@ -96,17 +96,17 @@ export default function DiseaseLibrary() {
         document.title = "Disease Library | IPM Scoutek";
     }, []);
 
-    // Filter diseases based on search and tab
+
     const filteredDiseases = useMemo(() => {
         let filtered = diseases;
 
-        // Filter by tab
+
         if (activeTab === "your") {
-            // For now, show some as "your diseases" - replace with actual user filter
+
             filtered = diseases.slice(0, 5);
         }
 
-        // Filter by search
+
         if (search.trim()) {
             const term = search.trim().toLowerCase();
             filtered = filtered.filter(
@@ -120,7 +120,7 @@ export default function DiseaseLibrary() {
         return filtered;
     }, [diseases, activeTab, search]);
 
-    // Pagination
+
     const totalPages = Math.ceil(filteredDiseases.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
     const paginatedDiseases = filteredDiseases.slice(

@@ -35,7 +35,7 @@ const AddBeneficial = () => {
 
     const totalRows = greenhouse?.totalRows || 75;
 
-    // Map generation logic
+
     const zones = useMemo(() => {
         const rowsPerZone = 5;
         const numZones = Math.ceil(totalRows / rowsPerZone);

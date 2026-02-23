@@ -34,6 +34,7 @@ export default function ViewSettings() {
     const navigate = useNavigate();
     const [greenhouse, setGreenhouse] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [confirmAction, setConfirmAction] = useState(null);
 
     useEffect(() => {
         fetchGreenhouse();
@@ -44,21 +45,50 @@ export default function ViewSettings() {
         try {
             const { data, error } = await supabase
                 .from("greenhouses")
-                .select("*")
+                .select("id, name, address, status, total_rows, lastWeekScouted, observations")
                 .eq("id", id)
                 .single();
 
             if (error) {
-                // Fallback to sample data for demo purposes if not in DB
                 const sample = SAMPLE_GREENHOUSES.find((g) => g.id === parseInt(id));
                 setGreenhouse(sample);
             } else {
                 setGreenhouse(data);
             }
         } catch (err) {
-            console.error("Error fetching greenhouse:", err);
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleArchive = async () => {
+        try {
+            const { error } = await supabase
+                .from("greenhouses")
+                .update({ status: 'archived' })
+                .eq("id", id)
+                .select('id');
+
+            if (error) throw error;
+            alert(`${greenhouse.name} has been archived.`);
+            navigate('/greenhouses');
+        } catch (err) {
+            alert("Failed to archive greenhouse. Please try again.");
+        }
+    };
+
+    const handleDelete = async () => {
+        try {
+            const { error } = await supabase
+                .from("greenhouses")
+                .delete()
+                .eq("id", id);
+
+            if (error) throw error;
+            alert(`${greenhouse.name} has been deleted.`);
+            navigate('/greenhouses');
+        } catch (err) {
+            alert("Failed to delete greenhouse. Please try again.");
         }
     };
 
@@ -80,7 +110,7 @@ export default function ViewSettings() {
                 rows.push({
                     number: zStartRow + j,
                     plant: "Beefsteak",
-                    hasMarker: (zStartRow + j) % 15 === 0 // Dummy marker every 15 rows
+                    hasMarker: (zStartRow + j) % 15 === 0
                 });
             }
             generatedZones.push({
@@ -190,17 +220,38 @@ export default function ViewSettings() {
 
                     <div className="settings-section">
                         <span className="section-label-green">Structure</span>
-                        <span className="settings-link">Edit Area and Address</span>
-                        <span className="settings-link">Rename Houses</span>
-                        <span className="settings-link">Change Rows Names or Statuses</span>
-                        <span className="settings-link">Change Sections Names or Colours</span>
+                        <span className="settings-link" onClick={() => navigateTo('area')}>Edit Area and Address</span>
+                        <span className="settings-link" onClick={() => navigateTo('houses')}>Rename Houses</span>
+                        <span className="settings-link" onClick={() => navigateTo('rows')}>Change Rows Names or Statuses</span>
+                        <span className="settings-link" onClick={() => navigateTo('sections')}>Change Sections Names or Colours</span>
                     </div>
 
                     <div className="settings-section">
                         <span className="section-label-green">Utility</span>
-                        <span className="settings-link">Archive {greenhouse.name}</span>
-                        <span className="settings-link">Delete {greenhouse.name}</span>
+                        <span className="settings-link" onClick={() => setConfirmAction('archive')}>Archive {greenhouse.name}</span>
+                        <span className="settings-link delete-link" onClick={() => setConfirmAction('delete')}>Delete {greenhouse.name}</span>
                     </div>
+
+                    {confirmAction && (
+                        <div className="confirm-modal-overlay">
+                            <div className="confirm-modal">
+                                <h3>{confirmAction === 'archive' ? 'Archive' : 'Delete'} Greenhouse?</h3>
+                                <p>
+                                    Are you sure you want to {confirmAction} <strong>{greenhouse.name}</strong>?
+                                    {confirmAction === 'delete' ? ' This action cannot be undone.' : ' You can still access archived greenhouses from the settings.'}
+                                </p>
+                                <div className="modal-actions">
+                                    <button className="cancel-btn" onClick={() => setConfirmAction(null)}>Cancel</button>
+                                    <button
+                                        className={`confirm-btn ${confirmAction === 'delete' ? 'delete' : 'archive'}`}
+                                        onClick={confirmAction === 'archive' ? handleArchive : handleDelete}
+                                    >
+                                        {confirmAction === 'archive' ? 'Archive' : 'Delete'}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
 
                 <div className="sidebar-footer-settings">

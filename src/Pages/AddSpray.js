@@ -42,7 +42,7 @@ const AddSpray = () => {
 
     const totalRows = greenhouse?.totalRows || 75;
 
-    // Map generation logic
+
     const zones = useMemo(() => {
         const rowsPerZone = 5;
         const numZones = Math.ceil(totalRows / rowsPerZone);
@@ -291,7 +291,6 @@ const AddSpray = () => {
                                                         className={`row-bar ${row.isGreen ? 'green-bar' : 'empty-bar'} ${selectedRows.has(row.number) ? 'selected-row' : ''}`}
                                                         onClick={() => toggleRowSelection(row.number)}
                                                     >
-                                                        {/* Optional: Add selection overlay or markers */}
                                                     </div>
                                                 </div>
                                             ))}

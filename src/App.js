@@ -18,6 +18,10 @@ import AddBeneficial from "./Pages/AddBeneficial.js";
 import EditPlants from "./Pages/EditPlants.js";
 import EditStickyCards from "./Pages/EditStickyCards.js";
 import EditThresholds from "./Pages/EditThresholds.js";
+import EditAreaAddress from "./Pages/EditAreaAddress.js";
+import RenameHouses from "./Pages/RenameHouses.js";
+import ChangeRowSettings from "./Pages/ChangeRowSettings.js";
+import ChangeSectionSettings from "./Pages/ChangeSectionSettings.js";
 import PlaceholderPage from "./Pages/PlaceholderPage.js";
 
 export default function App() {
@@ -35,6 +39,10 @@ export default function App() {
 
         <Route path="/greenhouses/:id/settings/sticky-cards" element={<EditStickyCards />} />
         <Route path="/greenhouses/:id/settings/thresholds" element={<EditThresholds />} />
+        <Route path="/greenhouses/:id/settings/area" element={<EditAreaAddress />} />
+        <Route path="/greenhouses/:id/settings/houses" element={<RenameHouses />} />
+        <Route path="/greenhouses/:id/settings/rows" element={<ChangeRowSettings />} />
+        <Route path="/greenhouses/:id/settings/sections" element={<ChangeSectionSettings />} />
 
         <Route path="/greenhouses/:id/applications" element={<GreenhouseApplications />} />
         <Route path="/greenhouses/:id/add-spray" element={<AddSpray />} />

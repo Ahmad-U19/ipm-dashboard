@@ -31,13 +31,11 @@ export default function EditStickyCards() {
                 setGreenhouse(data);
             }
         } catch (err) {
-            console.error("Error fetching greenhouse:", err);
         } finally {
             setLoading(false);
         }
     };
 
-    // Dummy data for sidebar rows as seen in screenshot
     const stickyData = [
         { row: 92, count: 19 },
         { row: 94, count: 10 },
@@ -62,7 +60,7 @@ export default function EditStickyCards() {
             for (let j = 0; j < rowsInThisZone; j++) {
                 rows.push({
                     number: zStartRow + j,
-                    hasMarker: (zStartRow + j) === 15 || (zStartRow + j) === 32 // Add some dummy markers
+                    hasMarker: (zStartRow + j) === 15 || (zStartRow + j) === 32
                 });
             }
 

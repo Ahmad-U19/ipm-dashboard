@@ -168,7 +168,6 @@ const OverviewView = ({ greenhouse }) => {
                     <h4>Pressure Distribution</h4>
                     <div className="chart-placeholder">
                         <p>No pest or disease data to display.</p>
-                        {/* Placeholder for a chart */}
                         <div style={{ height: '150px', background: '#f3f4f6', borderRadius: '4px', marginTop: '10px' }}></div>
                     </div>
                 </div>
@@ -216,7 +215,6 @@ const OverviewView = ({ greenhouse }) => {
 };
 
 const MapView = ({ applications, filters, totalRows }) => {
-    // Generate zones based on totalRows, each with 5 rows
     const zones = useMemo(() => {
         const rowsPerZone = 5;
         const numZones = Math.ceil((totalRows || 75) / rowsPerZone);
@@ -238,7 +236,7 @@ const MapView = ({ applications, filters, totalRows }) => {
 
             generatedZones.push({
                 id: i,
-                rows: [...rows].reverse() // Higher numbers at top of zone
+                rows: [...rows].reverse()
             });
         }
         return generatedZones;
@@ -262,13 +260,11 @@ const MapView = ({ applications, filters, totalRows }) => {
         </div>
     );
 
-    // Filter applications based on map filters and location data
+
     const visibleMarkers = useMemo(() => {
         return applications.filter(app => {
-            // Must have location data
             if (!app.row || !app.col) return false;
 
-            // Check if matches the global filters (passed from parent)
             const matchPest = filters.pests.length === 0 || app.pests.some(p => filters.pests.includes(p));
             const matchDisease = filters.diseases.length === 0 || app.diseases.some(d => filters.diseases.includes(d));
             const matchPlant = filters.plants.length === 0 || app.plants.some(p => filters.plants.includes(p));
@@ -372,7 +368,6 @@ const NotesView = () => {
         return SAMPLE_NOTES.filter(note => {
             const matchesCategory = (category, options) => {
                 if (options.length === 0) return true;
-                // Simple textual match since data is inconsistent
                 const text = (note.observation + " " + note.content + " " + note.type).toLowerCase();
                 return options.some(opt => text.includes(opt.toLowerCase()));
             };
@@ -388,7 +383,7 @@ const NotesView = () => {
     return (
         <div className="notes-view">
             <FilterBar
-                rightActions={<button className="apply-btn">APPLY</button>} // Keeping button for visual consistency with previous design, though filtering is instant
+                rightActions={<button className="apply-btn">APPLY</button>}
             >
                 <FilterDropdown label="Plants" options={plantOptions} selected={filters.plants} onChange={(val) => handleFilterChange('plants', val)} />
                 <FilterDropdown label="Pests" options={pestOptions} selected={filters.pests} onChange={(val) => handleFilterChange('pests', val)} />
@@ -589,7 +584,7 @@ const AddApplicationModal = ({ isOpen, onClose, onSave, totalRows }) => {
             ...formData,
             id: Date.now(),
             name: formData.title,
-            pests: ["Aphids"], // Default sample data
+            pests: ["Aphids"],
             diseases: [],
             plants: ["Tomato"],
             sprays: ["Actara"],
@@ -677,9 +672,7 @@ const GreenhouseApplications = () => {
     const [isAddOtherOpen, setIsAddOtherOpen] = useState(false);
     const [activeDropdown, setActiveDropdown] = useState(null);
 
-    // Applications State
     const [applications, setApplications] = useState(() => {
-        // Add some row/col to initial data for demo
         return SAMPLE_APPLICATIONS.map((app, idx) => ({
             ...app,
             row: 90 + idx, // Just random spread
@@ -691,7 +684,7 @@ const GreenhouseApplications = () => {
         setApplications([newApp, ...applications]);
     };
 
-    // Close dropdowns when clicking outside
+
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (!event.target.closest('.header-actions') && !event.target.closest('.mobile-actions-btn')) {
@@ -708,14 +701,14 @@ const GreenhouseApplications = () => {
 
     const greenhouse = SAMPLE_GREENHOUSES.find((g) => g.id === parseInt(id));
 
-    // Redirect if greenhouse not found
+
     useEffect(() => {
         if (!greenhouse && SAMPLE_GREENHOUSES.length > 0) {
             navigate("/greenhouses");
         }
     }, [id, greenhouse, navigate]);
 
-    // Filters State for Applications Tab
+
     const [filters, setFilters] = useState({
         pests: [],
         diseases: [],
@@ -732,7 +725,7 @@ const GreenhouseApplications = () => {
         }));
     };
 
-    // Derived Data for Filters
+
     const pestOptions = useMemo(() => SAMPLE_PESTS.map(p => p.name), []);
     const diseaseOptions = useMemo(() => SAMPLE_DISEASES.map(d => d.name), []);
     const plantOptions = useMemo(() => SAMPLE_PLANTS.map(p => p.name), []);
@@ -906,7 +899,7 @@ const GreenhouseApplications = () => {
                 </div>
             </div>
 
-            {/* Tabs Section */}
+
             <div className="greenhouse-tabs-container">
                 <div className="greenhouse-tabs">
                     {tabs.map((tab) => (
@@ -929,7 +922,7 @@ const GreenhouseApplications = () => {
                 </div>
             </div>
 
-            {/* Main Content Area */}
+
             <div className="greenhouse-content">
                 {activeTab === "Overview" && <OverviewView greenhouse={greenhouse} />}
                 {activeTab === "Map" && <MapView applications={applications} filters={filters} totalRows={greenhouse.totalRows} />}
@@ -1030,7 +1023,7 @@ const GreenhouseApplications = () => {
                 {activeTab === "Other Observations" && <OtherObservationsView />}
             </div>
 
-            {/* Assignments Modal */}
+
             <AssignmentsModal
                 isOpen={isAssignmentsOpen}
                 onClose={() => setIsAssignmentsOpen(false)}

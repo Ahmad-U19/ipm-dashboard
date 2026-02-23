@@ -1,0 +1,243 @@
+.edit-area-address-page {
+    display: flex;
+    height: 100vh;
+    background-color: #f8f9fa;
+}
+
+.edit-sidebar {
+    width: 380px;
+    background: white;
+    border-right: 1px solid #e9ecef;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.02);
+    z-index: 10;
+}
+
+.sidebar-header {
+    margin-bottom: 30px;
+}
+
+.gh-title-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.gh-icon-small {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+.gh-title-box h2 {
+    font-size: 1.25rem;
+    color: #2b3674;
+    margin: 0;
+    font-weight: 700;
+}
+
+.details-form-section {
+    flex-grow: 1;
+}
+
+.section-title {
+    color: #4318FF;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #4ba54d;
+    /* Matching GREEN color from screenshot */
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #4ba54d;
+    margin-bottom: 8px;
+}
+
+.required {
+    color: #d93025;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #2b3674;
+    transition: all 0.2s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #4ba54d;
+    box-shadow: 0 0 0 3px rgba(75, 165, 77, 0.1);
+}
+
+.sidebar-footer-actions {
+    display: flex;
+    gap: 12px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.back-btn-2 {
+    flex: 1;
+    background: white;
+    border: 1px solid #4ba54d;
+    color: #4ba54d;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.2s;
+}
+
+.back-btn:hover {
+    background: #f0f7f1;
+}
+
+.save-btn {
+    flex: 1;
+    padding: 12px;
+    background: #4ba54d;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.save-btn:hover {
+    background: #3e8e41;
+}
+
+/* Map area */
+.map-view-container {
+    flex-grow: 1;
+    position: relative;
+    background: #f0f0f0;
+}
+
+.google-map-mock {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.map-placeholder-bg {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+}
+
+.map-controls-top {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    background: white;
+    border-radius: 2px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    z-index: 5;
+}
+
+.map-type-btn {
+    padding: 8px 12px;
+    border: none;
+    background: white;
+    font-size: 14px;
+    font-family: Roboto, Arial, sans-serif;
+    cursor: pointer;
+    color: #666;
+}
+
+.map-type-btn.active {
+    color: #333;
+    font-weight: 500;
+}
+
+.map-type-btn:not(:last-child) {
+    border-right: 1px solid #eee;
+}
+
+.map-controls-bottom {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 5;
+}
+
+.zoom-controls {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    border-radius: 2px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.zoom-controls button {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: white;
+    font-size: 20px;
+    color: #666;
+    cursor: pointer;
+}
+
+.zoom-controls button:first-child {
+    border-bottom: 1px solid #eee;
+}
+
+.street-view-icon {
+    width: 40px;
+    height: 40px;
+    background: white;
+    border-radius: 2px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: #fbc02d;
+    cursor: pointer;
+}
+
+@media (max-width: 900px) {
+    .edit-area-address-page {
+        flex-direction: column;
+    }
+
+    .edit-sidebar {
+        width: 100%;
+        height: auto;
+        order: 2;
+    }
+
+    .map-view-container {
+        height: 400px;
+        order: 1;
+    }
+}

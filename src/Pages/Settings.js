@@ -25,8 +25,6 @@ const Settings = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('Form submitted:', formData);
-        // Add logic for saving settings
     };
 
     return (
